@@ -1,12 +1,3 @@
-HELP.md
-target/
-.mvn/
-.env
-*~
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
 ### Jooq Generated Files ###
 src/main/java/dev/invest/persistence/model/
 
@@ -41,5 +32,8 @@ build/
 ### Gradle ###
 /build
 .gradle/
+gradle.properties
 
 .gitattributes
+
+/out
