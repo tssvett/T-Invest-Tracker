@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="schema-invest/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="table-share/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="table-forecast/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="table-fundamental_forecast/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="table-user/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="table-user_share/2024-02-22-changelog.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

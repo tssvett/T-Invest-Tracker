@@ -37,3 +37,7 @@ gradle.properties
 .gitattributes
 
 /out
+
+### JOOQ generated sources ###
+/src/main/java/dev/invest/persistence/jooq
+*~

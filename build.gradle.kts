@@ -20,6 +20,7 @@ object Versions {
     const val JJWT_API = "0.12.6"
     const val JJWT_IMPL = "0.12.6"
     const val JJWT_JACKSON = "0.12.6"
+    const val JOOQ = "3.20.1"
 }
 
 // Константы для библиотек.
@@ -37,14 +38,18 @@ object Libraries {
     const val POSTGRESQL = "org.postgresql:postgresql:${Versions.POSTGRESQL}"
     const val SPRING_BOOT_STARTER_SECURITY =
         "org.springframework.boot:spring-boot-starter-security:${Versions.SPRING_BOOT_STARTER_SECURITY}"
+    const val SPRING_BOOT_STARTER_JOOQ = "org.springframework.boot:spring-boot-starter-jooq:${Versions.SPRING_BOOT}"
     const val JJWT_API = "io.jsonwebtoken:jjwt-api:${Versions.JJWT_API}"
     const val JJWT_IMPL = "io.jsonwebtoken:jjwt-impl:${Versions.JJWT_IMPL}"
     const val JJWT_JACKSON = "io.jsonwebtoken:jjwt-jackson:${Versions.JJWT_JACKSON}"
+    const val JOOQ_CODEGEN = "org.jooq:jooq-meta-extensions-liquibase:${Versions.JOOQ}"
+    const val JOOQ = "org.jooq:jooq:${Versions.JOOQ}"
 }
 
 plugins {
     application
     id("org.springframework.boot") version "3.3.4"
+    id("org.jooq.jooq-codegen-gradle") version "3.20.1"
 }
 
 repositories {
@@ -69,10 +74,17 @@ dependencies {
     implementation(Libraries.SPRING_BOOT_STARTER_WEB)
     // Spring Boot Starter Validation
     implementation(Libraries.SPRING_BOOT_STARTER_VALIDATION)
+
+    implementation(Libraries.SPRING_BOOT_STARTER_JOOQ)
     // Liquibase
     implementation(Libraries.LIQUIBASE_CORE)
     // PostgreSQL
     implementation(Libraries.POSTGRESQL)
+
+    //JOOQ
+    implementation(Libraries.JOOQ)
+    // JOOQ Codegen
+    jooqCodegen(Libraries.JOOQ_CODEGEN)
 
     // Spring Boot Starter Security
     //implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
@@ -80,6 +92,67 @@ dependencies {
     //implementation(Libraries.JJWT_API)
     //implementation(Libraries.JJWT_IMPL)
     //implementation(Libraries.JJWT_JACKSON)
+}
+
+jooq {
+    configuration {
+        generator {
+            database {
+                name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
+                properties {
+
+                    property {
+                        key = "rootPath"
+                        value = "${project.projectDir}/src/main/resources"
+                    }
+
+                    // Specify the classpath location of your XML, YAML, or JSON script.
+                    property {
+                        key = "scripts"
+                        value = "/migrations/changelog-master.xml"
+                    }
+
+                    // Whether you want to include liquibase tables in generated output
+                    //
+                    // - false (default)
+                    // - true: includes DATABASECHANGELOG and DATABASECHANGELOGLOCK tables
+                    property {
+                        key = "includeLiquibaseTables"
+                        value = false.toString()
+                    }
+
+                    // Whether you want to use jOOQ's translating ParsingConnection to translate
+                    // between your dialect (e.g. Oracle), and jOOQ's in-memory H2 dialect
+                    //
+                    // - false (default)
+                    // - true: translates e.g. from VARCHAR2(100) to VARCHAR(100)
+                    property {
+                        key = "useParsingConnection"
+                        value = false.toString()
+                    }
+
+                    // Properties prefixed "database." will be passed on to the liquibase.database.Database class
+                    // if a matching setter is found
+                    property {
+                        key = "database.liquibaseSchemaName"
+                        value = "lb"
+                    }
+
+                    // The property "changeLogParameters.contexts" will be passed on to the
+                    // liquibase.database.Database.update() call (jOOQ 3.13.2+).
+                    // See https://www.liquibase.org/documentation/contexts.html
+                    property {
+                        key = "changeLogParameters.contexts"
+                        value = "!test"
+                    }
+                }
+                target {
+                    directory = "${project.projectDir}/src/main/java/dev/invest/persistence/jooq"
+                    packageName = "dev.invest.persistence.jooq.org.jooq.generated"
+                }
+            }
+        }
+    }
 }
 
 // Настройка Java toolchain для использования конкретной версии Java.
@@ -97,4 +170,10 @@ tasks.withType<JavaCompile>().configureEach {
 // Настройка тестов для использования JUnit Platform.
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+tasks {
+    compileJava {
+        dependsOn(jooqCodegen)
+    }
 }
