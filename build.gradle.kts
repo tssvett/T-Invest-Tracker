@@ -99,7 +99,6 @@ dependencies {
     implementation(Libraries.SWAGGER_UI_STARTER)
 
 
-
     // Spring Boot Starter Security
     //implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
     // JJWT для работы с JWT токенами.
@@ -192,10 +191,9 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
-/*
+
 tasks {
     compileJava {
         dependsOn(jooqCodegen)
     }
 }
-*/
