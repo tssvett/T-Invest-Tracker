@@ -1,4 +1,4 @@
-package dev.invest.controller.forecast;
+package dev.invest.controller;
 
 import dev.invest.model.forecast.CreateForecastRequest;
 import dev.invest.model.forecast.ForecastDto;
