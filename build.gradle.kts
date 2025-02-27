@@ -21,6 +21,9 @@ object Versions {
     const val JJWT_IMPL = "0.12.6"
     const val JJWT_JACKSON = "0.12.6"
     const val JOOQ = "3.20.1"
+    const val SWAGGER = "1.6.15"
+    const val SWAGGER_UI = "1.8.0"
+    const val SWAGGER_UI_STARTER = "2.8.5"
 }
 
 // Константы для библиотек.
@@ -44,12 +47,16 @@ object Libraries {
     const val JJWT_JACKSON = "io.jsonwebtoken:jjwt-jackson:${Versions.JJWT_JACKSON}"
     const val JOOQ_CODEGEN = "org.jooq:jooq-meta-extensions-liquibase:${Versions.JOOQ}"
     const val JOOQ = "org.jooq:jooq:${Versions.JOOQ}"
+    const val SWAGGER = "io.swagger:swagger-annotations:${Versions.SWAGGER}"
+    const val SWAGGER_UI = "org.springdoc:springdoc-openapi-ui:${Versions.SWAGGER_UI}"
+    const val SWAGGER_UI_STARTER = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.SWAGGER_UI_STARTER}"
 }
 
 plugins {
     application
     id("org.springframework.boot") version "3.3.4"
     id("org.jooq.jooq-codegen-gradle") version "3.20.1"
+    id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
 repositories {
@@ -85,6 +92,12 @@ dependencies {
     implementation(Libraries.JOOQ)
     // JOOQ Codegen
     jooqCodegen(Libraries.JOOQ_CODEGEN)
+
+    // Swagger
+    //implementation(Libraries.SWAGGER)
+    //implementation(Libraries.SWAGGER_UI)
+    implementation(Libraries.SWAGGER_UI_STARTER)
+
 
     // Spring Boot Starter Security
     //implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
@@ -155,6 +168,12 @@ jooq {
     }
 }
 
+openApi {
+    apiDocsUrl.set("http://localhost:8080/v3/api-docs")
+    outputDir.set(file("${project.projectDir}/docs"))
+    outputFileName.set("openapi.yaml")
+}
+
 // Настройка Java toolchain для использования конкретной версии Java.
 java {
     toolchain {
@@ -171,6 +190,7 @@ tasks.withType<JavaCompile>().configureEach {
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
+
 
 tasks {
     compileJava {
