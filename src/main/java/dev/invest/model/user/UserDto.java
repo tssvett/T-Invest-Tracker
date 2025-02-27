@@ -1,6 +1,6 @@
 package dev.invest.model.user;
 
-public record UserDto(
+import java.util.UUID;
 
-) {
+public record UserDto(UUID uuid, String username, String email) {
 }
