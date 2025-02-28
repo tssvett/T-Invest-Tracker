@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CreateFundamentalRequest(
-        @NotBlank UUID asset_uid,
+        UUID asset_id,
         @NotBlank String currency,
         BigDecimal market_capitalization,
         BigDecimal high_price_last_52_weeks,

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CreateShareRequest(
-        @NotBlank UUID uuid,
+        UUID id,
 
         @NotBlank String currency,
         @NotBlank String ticker,

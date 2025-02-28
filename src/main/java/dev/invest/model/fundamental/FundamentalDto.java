@@ -1,12 +1,14 @@
 package dev.invest.model.fundamental;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 // https://russianinvestments.github.io/investAPI/instruments/#getassetfundamentalsresponsestatisticresponse
 public record FundamentalDto(
-    UUID asset_uid,
-    String currency,
+    UUID asset_id,
+    @NotBlank String currency,
     BigDecimal market_capitalization,
     BigDecimal high_price_last_52_weeks,
     BigDecimal low_price_last_52_weeks,
