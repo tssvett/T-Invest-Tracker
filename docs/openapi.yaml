@@ -1,0 +1,664 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Invest API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "tags": [
+    {
+      "name": "forecast-controller",
+      "description": "API Прогнозов по акциям"
+    },
+    {
+      "name": "user-controller",
+      "description": "API для работы с пользователями"
+    },
+    {
+      "name": "fundamental-controller",
+      "description": "API Фундаментальных прогнозов по акциям"
+    },
+    {
+      "name": "share-controller",
+      "description": "API для работы с акциями"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/{uuid}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Получить пользователя по его идентификатору",
+        "operationId": "findUserByUid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Обновить пользователя по идентификатору",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Удалить пользователя по идентификатору",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/share/{uuid}": {
+      "get": {
+        "tags": [
+          "share-controller"
+        ],
+        "summary": "Получить акцию по её идентификатору",
+        "operationId": "findShareByUid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "share-controller"
+        ],
+        "summary": "Обновить акцию по идентификатору",
+        "operationId": "updateShare",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateShareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "share-controller"
+        ],
+        "summary": "Удалить акцию по идентификатору",
+        "operationId": "deleteShare",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/fundamental/{uuid}": {
+      "get": {
+        "tags": [
+          "fundamental-controller"
+        ],
+        "summary": "Получить фундаментальный прогноз по его идентификатору",
+        "operationId": "findFundamentalForecastByUid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FundamentalDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "fundamental-controller"
+        ],
+        "summary": "Обновить фундаментальный прогноз по идентификатору",
+        "operationId": "updateFundamentalForecast",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFundamentalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FundamentalDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "fundamental-controller"
+        ],
+        "summary": "Удалить фундаментальный прогноз по идентификатору",
+        "operationId": "deleteFundamentalForecast",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/forecast/{uuid}": {
+      "get": {
+        "tags": [
+          "forecast-controller"
+        ],
+        "summary": "Получить прогноз по его идентификатору",
+        "operationId": "findForecastByUid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "forecast-controller"
+        ],
+        "summary": "Обновить прогноз по идентификатору",
+        "operationId": "updateForecast",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateForecastRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "forecast-controller"
+        ],
+        "summary": "Удалить прогноз по идентификатору",
+        "operationId": "deleteForecast",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Получить всех пользователей",
+        "operationId": "findAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Создать нового пользователя",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/share": {
+      "get": {
+        "tags": [
+          "share-controller"
+        ],
+        "summary": "Получить все акции",
+        "operationId": "findAllShares",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShareDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "share-controller"
+        ],
+        "summary": "Создать новую акцию",
+        "operationId": "createShare",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fundamental": {
+      "get": {
+        "tags": [
+          "fundamental-controller"
+        ],
+        "summary": "Получить все фундаментальные прогнозы по акциям",
+        "operationId": "findAllFundamentalForecasts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FundamentalDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "fundamental-controller"
+        ],
+        "summary": "Создать фундаметнальный прогноз по акциям",
+        "operationId": "createFundamentalForecast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFundamentalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FundamentalDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/forecast": {
+      "get": {
+        "tags": [
+          "forecast-controller"
+        ],
+        "summary": "Получить все прогнозы по акциям",
+        "operationId": "findAllForecasts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ForecastDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "forecast-controller"
+        ],
+        "summary": "Создать прогноз по акциям",
+        "operationId": "createForecast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateForecastRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UpdateUserRequest": {
+        "type": "object"
+      },
+      "UserDto": {
+        "type": "object"
+      },
+      "UpdateShareRequest": {
+        "type": "object"
+      },
+      "ShareDto": {
+        "type": "object"
+      },
+      "UpdateFundamentalRequest": {
+        "type": "object"
+      },
+      "FundamentalDto": {
+        "type": "object"
+      },
+      "UpdateForecastRequest": {
+        "type": "object"
+      },
+      "ForecastDto": {
+        "type": "object"
+      },
+      "CreateUserRequest": {
+        "type": "object"
+      },
+      "CreateShareRequest": {
+        "type": "object"
+      },
+      "CreateFundamentalRequest": {
+        "type": "object"
+      },
+      "CreateForecastRequest": {
+        "type": "object"
+      }
+    }
+  }
+}
