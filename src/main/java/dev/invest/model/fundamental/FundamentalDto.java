@@ -3,6 +3,7 @@ package dev.invest.model.fundamental;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+// https://russianinvestments.github.io/investAPI/instruments/#getassetfundamentalsresponsestatisticresponse
 public record FundamentalDto(
     UUID asset_uid,
     String currency,
