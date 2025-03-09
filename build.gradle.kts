@@ -24,6 +24,8 @@ object Versions {
     const val SWAGGER = "1.6.15"
     const val SWAGGER_UI = "1.8.0"
     const val SWAGGER_UI_STARTER = "2.8.5"
+    const val INVEST_CORE = "1.30"
+    const val MAPSTRUCT = "1.6.3"
 }
 
 // Константы для библиотек.
@@ -50,6 +52,9 @@ object Libraries {
     const val SWAGGER = "io.swagger:swagger-annotations:${Versions.SWAGGER}"
     const val SWAGGER_UI = "org.springdoc:springdoc-openapi-ui:${Versions.SWAGGER_UI}"
     const val SWAGGER_UI_STARTER = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.SWAGGER_UI_STARTER}"
+    const val INVEST_CORE = "ru.tinkoff.piapi:java-sdk-core:${Versions.INVEST_CORE}"
+    const val MAPSTRUCT = "org.mapstruct:mapstruct:${Versions.MAPSTRUCT}"
+    const val MAPSTRUCT_PROCESSOR = "org.mapstruct:mapstruct-processor:${Versions.MAPSTRUCT}"
 }
 
 plugins {
@@ -97,6 +102,13 @@ dependencies {
     //implementation(Libraries.SWAGGER)
     //implementation(Libraries.SWAGGER_UI)
     implementation(Libraries.SWAGGER_UI_STARTER)
+
+    // T-Invest Core
+    implementation(Libraries.INVEST_CORE)
+
+    //MapStruct
+    implementation(Libraries.MAPSTRUCT)
+    annotationProcessor(Libraries.MAPSTRUCT_PROCESSOR)
 
 
     // Spring Boot Starter Security
@@ -160,8 +172,8 @@ jooq {
                     }
                 }
                 target {
-                    directory = "${project.projectDir}/src/main/java/dev/invest/persistence/jooq"
-                    packageName = "dev.invest.persistence.jooq.org.jooq.generated"
+                    directory = "${project.projectDir}/src/main/java/dev/invest/db/jooq"
+                    packageName = "dev.invest.db.jooq.org.jooq.generated"
                 }
             }
         }

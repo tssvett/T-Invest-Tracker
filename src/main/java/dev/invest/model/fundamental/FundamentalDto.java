@@ -20,7 +20,5 @@ public record FundamentalDto(
     BigDecimal dividend_yield_daily_ttm,
     BigDecimal dividend_rate_ttm,
     BigDecimal dividends_per_share
-
-
 ) {
 }

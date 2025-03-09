@@ -19,8 +19,21 @@ spring:
     time-zone: Europe/Samara
 
   jooq:
-    sql-dialect: postgres
+    sql-dialect: Postgres
 
 springdoc:
   server-url:
     - http://localhost:8080
+
+invest:
+  token: ${INVEST_TOKEN}
+  share:
+    initializer:
+      enabled: false
+
+#logging:
+ # level:
+  #  org:
+   #   jooq:
+    #    tools:
+     #     LoggerListener: debug
