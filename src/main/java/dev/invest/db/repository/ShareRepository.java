@@ -113,11 +113,17 @@ public class ShareRepository {
                 .execute();
     }
 
-    public List<ShareRecord> getAll(int page, int size) {
+    public List<ShareRecord> getAllOffsetLimit(int page, int size) {
         return dslContext.selectFrom(Share.SHARE)
                 .orderBy(Share.SHARE.FIGI.asc())
                 .limit(size)
                 .offset(page * size)
+                .fetch();
+    }
+
+    public List<ShareRecord> getAll() {
+        return dslContext.selectFrom(Share.SHARE)
+                .orderBy(Share.SHARE.FIGI.asc())
                 .fetch();
     }
 }

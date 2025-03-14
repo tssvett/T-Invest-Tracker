@@ -42,7 +42,7 @@ public class ShareController {
     @PostMapping("/all")
     @Operation(summary = "Получить все акции", tags = {SHARE_CONTROLLER})
     public List<ShareDto> findAllShares(@RequestBody @Valid @Nullable Pagination pagination) {
-        return shareMapper.toModelList(shareService.getAll(pagination));
+        return shareMapper.toModelList(shareService.getAllPagination(pagination));
     }
 
     @GetMapping("/{uuid}")

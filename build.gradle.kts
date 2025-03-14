@@ -26,6 +26,7 @@ object Versions {
     const val SWAGGER_UI_STARTER = "2.8.5"
     const val INVEST_CORE = "1.30"
     const val MAPSTRUCT = "1.6.3"
+    const val RATE_LIMITER = "2.3.0"
 }
 
 // Константы для библиотек.
@@ -44,6 +45,7 @@ object Libraries {
     const val SPRING_BOOT_STARTER_SECURITY =
         "org.springframework.boot:spring-boot-starter-security:${Versions.SPRING_BOOT_STARTER_SECURITY}"
     const val SPRING_BOOT_STARTER_JOOQ = "org.springframework.boot:spring-boot-starter-jooq:${Versions.SPRING_BOOT}"
+    const val SPRING_BOOT_STARTER_AOP = "org.springframework.boot:spring-boot-starter-aop:${Versions.SPRING_BOOT}"
     const val JJWT_API = "io.jsonwebtoken:jjwt-api:${Versions.JJWT_API}"
     const val JJWT_IMPL = "io.jsonwebtoken:jjwt-impl:${Versions.JJWT_IMPL}"
     const val JJWT_JACKSON = "io.jsonwebtoken:jjwt-jackson:${Versions.JJWT_JACKSON}"
@@ -55,6 +57,8 @@ object Libraries {
     const val INVEST_CORE = "ru.tinkoff.piapi:java-sdk-core:${Versions.INVEST_CORE}"
     const val MAPSTRUCT = "org.mapstruct:mapstruct:${Versions.MAPSTRUCT}"
     const val MAPSTRUCT_PROCESSOR = "org.mapstruct:mapstruct-processor:${Versions.MAPSTRUCT}"
+    const val RATE_LIMITER = "io.github.resilience4j:resilience4j-spring-boot3:${Versions.RATE_LIMITER}"
+
 }
 
 plugins {
@@ -86,8 +90,10 @@ dependencies {
     implementation(Libraries.SPRING_BOOT_STARTER_WEB)
     // Spring Boot Starter Validation
     implementation(Libraries.SPRING_BOOT_STARTER_VALIDATION)
-
+    // Spring Boot Starter Jooq
     implementation(Libraries.SPRING_BOOT_STARTER_JOOQ)
+    ///Spring Boot Starter AOP
+    implementation(Libraries.SPRING_BOOT_STARTER_AOP)
     // Liquibase
     implementation(Libraries.LIQUIBASE_CORE)
     // PostgreSQL
@@ -110,9 +116,12 @@ dependencies {
     implementation(Libraries.MAPSTRUCT)
     annotationProcessor(Libraries.MAPSTRUCT_PROCESSOR)
 
+    //Rate Limiter
+    implementation(Libraries.RATE_LIMITER)
+
 
     // Spring Boot Starter Security
-    //implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
+    implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
     // JJWT для работы с JWT токенами.
     //implementation(Libraries.JJWT_API)
     //implementation(Libraries.JJWT_IMPL)

@@ -26,4 +26,13 @@ public class DateUtils {
 
         return java.sql.Timestamp.from(instant);
     }
+
+    public static Timestamp getCurrentProtoTimestamp() {
+        Instant now = Instant.now();
+
+        return Timestamp.newBuilder()
+                .setSeconds(now.getEpochSecond())
+                .setNanos(now.getNano())
+                .build();
+    }
 }

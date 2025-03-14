@@ -1,5 +1,6 @@
 package dev.invest.mapper;
 
+import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ShareRecord;
 import dev.invest.model.share.ShareDto;
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,8 +9,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import ru.tinkoff.piapi.contract.v1.Quotation;
-import ru.tinkoff.piapi.contract.v1.Share;
-import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ShareRecord;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface ShareMapper {
