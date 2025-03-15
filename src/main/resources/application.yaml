@@ -19,8 +19,29 @@ spring:
     time-zone: Europe/Samara
 
   jooq:
-    sql-dialect: postgres
+    sql-dialect: Postgres
 
 springdoc:
   server-url:
     - http://localhost:8080
+
+invest:
+  token: ${INVEST_TOKEN}
+
+  initializer:
+    enabled: false #Когда надо заполнять данными бд, поменять на true
+
+resilience4j:
+  ratelimiter:
+    instances:
+      forecastRateLimiter:
+        limitForPeriod: 190
+        limitRefreshPeriod: 1m
+        timeoutDuration: 5s
+
+#logging:
+ # level:
+  #  org:
+   #   jooq:
+    #    tools:
+     #     LoggerListener: debug

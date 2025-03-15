@@ -1,5 +1,5 @@
 ### Jooq Generated Files ###
-src/main/java/dev/invest/persistence/model/
+src/main/java/dev/invest/db/jooq/
 
 ### STS ###
 .apt_generated

@@ -11,12 +11,11 @@ public record ForecastDto(
         @NotBlank String currency,
         @NotBlank String ticker,
         Integer recommendation,
-        BigDecimal current_price,
+        BigDecimal currentPrice,
         BigDecimal consensus,
-        BigDecimal min_target,
-        BigDecimal max_target,
-        BigDecimal price_change,
-        BigDecimal price_change_rel
+        BigDecimal minTarget,
+        BigDecimal maxTarget,
+        BigDecimal priceChange,
+        BigDecimal priceChangeRel
 ) {
-
 }

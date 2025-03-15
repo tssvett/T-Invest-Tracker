@@ -1,13 +1,16 @@
 package dev.invest.controller;
 
+import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
 import dev.invest.model.user.UpdateUserRequest;
 import dev.invest.model.user.UserDto;
+import dev.invest.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = UserController.USER_CONTROLLER, description = "API для работы с пользователями")
 @RequestMapping(UserController.API_USER)
+@RequiredArgsConstructor
 public class UserController {
-
     static final String USER_CONTROLLER = "user-controller";
     static final String API_VERSION = "v1";
     static final String API_PREFIX = "/api/" + API_VERSION;
     static final String API_USER = API_PREFIX + "/user";
+
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping
     @Operation(
@@ -35,8 +41,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     public List<UserDto> findAllUsers() {
-        //TODO: Business logic
-        return null;
+        return userService.findAll();
     }
 
     @GetMapping("/{uuid}")
@@ -55,7 +60,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     public UserDto createUser(@RequestBody @Valid CreateUserRequest request) {
-        //TODO: Business logic
+        //return userService.create(request);
         return null;
     }
 
