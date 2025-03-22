@@ -1,5 +1,6 @@
 package dev.invest.service;
 
+import dev.invest.bootstrap.initializer.Initializer;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ForecastRecord;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ShareRecord;
 import dev.invest.db.repository.ForecastRepository;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ForecastService implements Initializer {
+public class ForecastService {
     private final ForecastRepository forecastRepository;
     private final ShareService shareService;
     private final ForecastMapper forecastMapper;
@@ -59,17 +60,5 @@ public class ForecastService implements Initializer {
         forecastRepository.delete(uid)
                 .orElseThrow(() -> new NoSuchElementException("Прогноз с uid " + uid + " не найден"));
         log.info("Прогноз {} удален", uid);
-    }
-
-    @Override
-    public void initialize() {
-        log.info("Инициализируем базу прогнозов");
-        List<String> tickers = shareService.getAll()
-                .stream()
-                .map(ShareRecord::getTicker)
-                .toList();
-        GenerateUtils.buildConsensusList(tickers)
-                .forEach(forecastRepository::save);
-        log.info("База прогнозов инициализирована успешно!");
     }
 }

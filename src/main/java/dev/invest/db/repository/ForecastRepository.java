@@ -119,7 +119,7 @@ public class ForecastRepository {
             log.warn("Попытка обновить пустой прогноз, не обновляем");
             return Optional.empty();
         }
-        return Optional.ofNullable(dslContext.update(FORECAST)
+        return dslContext.update(FORECAST)
                 .set(FORECAST.TICKER, forecast.ticker())
                 .set(FORECAST.RECOMENDATION, forecast.recommendation().toString())
                 .set(FORECAST.CURRENCY, forecast.currency())
@@ -130,12 +130,12 @@ public class ForecastRepository {
                 .set(FORECAST.PRICE_CHANGE, MoneyUtils.toBigInteger(forecast.priceChange()))
                 .set(FORECAST.PRICE_CHANGE_REL, MoneyUtils.toBigInteger(forecast.priceChangeRel()))
                 .where(FORECAST.UID.eq(uuid))
-                .returning().fetchAny());
+                .returning().fetchOptional();
     }
 
     public Optional<ForecastRecord> delete(UUID uid) {
-        return Optional.ofNullable(dslContext.deleteFrom(FORECAST)
+        return dslContext.deleteFrom(FORECAST)
                 .where(FORECAST.UID.eq(uid))
-                .returning().fetchAny());
+                .returning().fetchOptional();
     }
 }

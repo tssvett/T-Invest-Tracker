@@ -1,8 +1,10 @@
 package dev.invest.model.fundamental;
 
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 public record UpdateFundamentalRequest(
+        @NotBlank String currency,
         BigDecimal marketCapitalization,
         BigDecimal highPriceLast52Weeks,
         BigDecimal lowPriceLast52Weeks,

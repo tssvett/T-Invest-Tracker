@@ -2,8 +2,11 @@ package dev.invest.db.repository;
 
 import static dev.invest.db.jooq.org.jooq.generated.invest.Tables.FUNDAMENTAL_FORECAST;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.FundamentalForecastRecord;
+import dev.invest.model.fundamental.CreateFundamentalRequest;
+import dev.invest.model.fundamental.UpdateFundamentalRequest;
 import dev.invest.utils.DateUtils;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -146,10 +149,10 @@ public class FundamentalRepository {
                 .fetch();
     }
 
-    public FundamentalForecastRecord getById(UUID assetUid) {
+    public Optional<FundamentalForecastRecord> getById(UUID assetUid) {
         return dslContext.selectFrom(FUNDAMENTAL_FORECAST)
                 .where(FUNDAMENTAL_FORECAST.ASSET_UID.eq(assetUid))
-                .fetchOne();
+                .fetchOptional();
     }
 
     public int update(GetAssetFundamentalsResponse.StatisticResponse fundamental) {
@@ -239,9 +242,66 @@ public class FundamentalRepository {
                 .execute();
     }
 
-    public int delete(UUID assetUid) {
+    public FundamentalForecastRecord save(CreateFundamentalRequest request) {
+        return dslContext.insertInto(FUNDAMENTAL_FORECAST,
+                        FUNDAMENTAL_FORECAST.ASSET_UID,
+                        FUNDAMENTAL_FORECAST.CURRENCY,
+                        FUNDAMENTAL_FORECAST.MARKET_CAPITALIZATION,
+                        FUNDAMENTAL_FORECAST.HIGH_PRICE_LAST_52_WEEKS,
+                        FUNDAMENTAL_FORECAST.LOW_PRICE_LAST_52_WEEKS,
+                        FUNDAMENTAL_FORECAST.AVERAGE_DAILY_VOLUME_LAST_10_DAYS,
+                        FUNDAMENTAL_FORECAST.AVERAGE_DAILY_VOLUME_LAST_4_WEEKS,
+                        FUNDAMENTAL_FORECAST.REVENUE_TTM,
+                        FUNDAMENTAL_FORECAST.FREE_CASH_FLOW_TTM,
+                        FUNDAMENTAL_FORECAST.THREE_YEAR_ANNUAL_REVENUE_GROWTH_RATE,
+                        FUNDAMENTAL_FORECAST.DIVIDEND_YIELD_DAILY_TTM,
+                        FUNDAMENTAL_FORECAST.DIVIDEND_RATE_TTM,
+                        FUNDAMENTAL_FORECAST.DIVIDENDS_PER_SHARE)
+                .values(
+                        request.assetId(),
+                        request.currency(),
+                        request.marketCapitalization().doubleValue(),
+                        request.highPriceLast52Weeks().doubleValue(),
+                        request.lowPriceLast52Weeks().doubleValue(),
+                        request.averageDailyVolumeLast10Days().doubleValue(),
+                        request.averageDailyVolumeLast4Weeks().doubleValue(),
+                        request.revenueTtm().doubleValue(),
+                        request.freeCashFlowTtm().doubleValue(),
+                        request.threeYearAnnualRevenueGrowthRate().doubleValue(),
+                        request.dividendYieldDailyTtm().doubleValue(),
+                        request.dividendRateTtm().doubleValue(),
+                        request.dividendsPerShare().doubleValue())
+                .onDuplicateKeyIgnore()
+                .returning().fetchOne();
+    }
+
+    public Optional<FundamentalForecastRecord> update(UUID assetUid, UpdateFundamentalRequest request) {
+        if (request == null) {
+            log.warn("Попытка обновить пустой фундаментальный прогноз. Пропускаем сущность...");
+            return Optional.empty();
+        }
+
+        return dslContext.update(FUNDAMENTAL_FORECAST)
+                .set(FUNDAMENTAL_FORECAST.CURRENCY, request.currency())
+                .set(FUNDAMENTAL_FORECAST.MARKET_CAPITALIZATION, request.marketCapitalization().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.HIGH_PRICE_LAST_52_WEEKS, request.highPriceLast52Weeks().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.LOW_PRICE_LAST_52_WEEKS, request.lowPriceLast52Weeks().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.AVERAGE_DAILY_VOLUME_LAST_10_DAYS, request.averageDailyVolumeLast10Days().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.AVERAGE_DAILY_VOLUME_LAST_4_WEEKS, request.averageDailyVolumeLast4Weeks().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.REVENUE_TTM, request.revenueTtm().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.FREE_CASH_FLOW_TTM, request.freeCashFlowTtm().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.THREE_YEAR_ANNUAL_REVENUE_GROWTH_RATE, request.threeYearAnnualRevenueGrowthRate().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.DIVIDEND_YIELD_DAILY_TTM, request.dividendYieldDailyTtm().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.DIVIDEND_RATE_TTM, request.dividendRateTtm().doubleValue())
+                .set(FUNDAMENTAL_FORECAST.DIVIDENDS_PER_SHARE, request.dividendsPerShare().doubleValue())
+                .where(FUNDAMENTAL_FORECAST.ASSET_UID.eq(assetUid))
+                .returning()
+                .fetchOptional();
+    }
+
+    public Optional<FundamentalForecastRecord> delete(UUID assetUid) {
         return dslContext.deleteFrom(FUNDAMENTAL_FORECAST)
                 .where(FUNDAMENTAL_FORECAST.ASSET_UID.eq(assetUid))
-                .execute();
+                .returning().fetchOptional();
     }
 }
