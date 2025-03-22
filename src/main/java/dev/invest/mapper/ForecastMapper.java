@@ -1,5 +1,6 @@
 package dev.invest.mapper;
 
+import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ForecastRecord;
 import dev.invest.model.forecast.ForecastDto;
 import java.math.BigDecimal;
 import org.mapstruct.Mapper;
@@ -20,6 +21,10 @@ public interface ForecastMapper {
     @Mapping(source = "priceChange", target = "priceChange", qualifiedByName = "toBigDecimal")
     @Mapping(source = "priceChangeRel", target = "priceChangeRel", qualifiedByName = "toBigDecimal")
     ForecastDto toModel(ConsensusItem forecast);
+
+    @Mapping(source = "uid", target = "id")
+    @Mapping(source = "recomendation", target = "recommendation")
+    ForecastDto toModel(ForecastRecord forecastRecord);
 
     @Named("toBigDecimal")
     default BigDecimal toBigDecimal(Quotation quotation) {

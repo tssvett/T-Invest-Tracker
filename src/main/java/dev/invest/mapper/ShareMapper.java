@@ -14,6 +14,7 @@ import ru.tinkoff.piapi.contract.v1.Quotation;
 public interface ShareMapper {
 
     @Mapping(source = "uid", target = "id")
+    @Mapping(source = "assetUid", target = "assetId")
     ShareDto toModel(ShareRecord shareRecord);
 
     List<ShareDto> toModelList(List<ShareRecord> sharesRecord);

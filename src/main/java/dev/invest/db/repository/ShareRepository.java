@@ -6,6 +6,7 @@ import dev.invest.utils.BrandUtils;
 import dev.invest.utils.DateUtils;
 import dev.invest.utils.MoneyUtils;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -125,5 +126,70 @@ public class ShareRepository {
         return dslContext.selectFrom(Share.SHARE)
                 .orderBy(Share.SHARE.FIGI.asc())
                 .fetch();
+    }
+
+    public ShareRecord getById(UUID uid) {
+        return dslContext.selectFrom(Share.SHARE)
+                .where(Share.SHARE.UID.eq(uid))
+                .fetchOne();
+    }
+
+    public int update(ru.tinkoff.piapi.contract.v1.Share share) {
+        return dslContext.update(Share.SHARE)
+                .set(Share.SHARE.FIGI, share.getFigi())
+                .set(Share.SHARE.TICKER, share.getTicker())
+                .set(Share.SHARE.CLASS_CODE, share.getClassCode())
+                .set(Share.SHARE.ISIN, share.getIsin())
+                .set(Share.SHARE.LOT, share.getLot())
+                .set(Share.SHARE.CURRENCY, share.getCurrency())
+                .set(Share.SHARE.KLONG, MoneyUtils.toBigInteger(share.getKlong()))
+                .set(Share.SHARE.KSHORT, MoneyUtils.toBigInteger(share.getKshort()))
+                .set(Share.SHARE.DLONG, MoneyUtils.toBigInteger(share.getDlong()))
+                .set(Share.SHARE.DSHORT, MoneyUtils.toBigInteger(share.getDshort()))
+                .set(Share.SHARE.DLONG_MIN, MoneyUtils.toBigInteger(share.getDlongMin()))
+                .set(Share.SHARE.DSHORT_MIN, MoneyUtils.toBigInteger(share.getDshortMin()))
+                .set(Share.SHARE.SHORT_ENABLED_FLAG, share.getShortEnabledFlag())
+                .set(Share.SHARE.NAME, share.getName())
+                .set(Share.SHARE.EXCHANGE, share.getExchange())
+                .set(Share.SHARE.IPO_DATE, DateUtils.toLocalDateTime(share.getIpoDate()))
+                .set(Share.SHARE.ISSUE_SIZE, share.getIssueSize())
+                .set(Share.SHARE.COUNTRY_OF_RISK, share.getCountryOfRisk())
+                .set(Share.SHARE.COUNTRY_OF_RISK_NAME, share.getCountryOfRiskName())
+                .set(Share.SHARE.SECTOR, share.getSector())
+                .set(Share.SHARE.ISSUE_SIZE_PLAN, share.getIssueSizePlan())
+                .set(Share.SHARE.NOMINAL, MoneyUtils.toBigInteger(share.getNominal()))
+                .set(Share.SHARE.TRADING_STATUS, share.getTradingStatus().toString())
+                .set(Share.SHARE.OTC_FLAG, share.getOtcFlag())
+                .set(Share.SHARE.BUY_AVAILABLE_FLAG, share.getBuyAvailableFlag())
+                .set(Share.SHARE.SELL_AVAILABLE_FLAG, share.getSellAvailableFlag())
+                .set(Share.SHARE.DIV_YIELD_FLAG, share.getDivYieldFlag())
+                .set(Share.SHARE.SHARE_TYPE, share.getShareType().toString())
+                .set(Share.SHARE.MIN_PRICE_INCREMENT, MoneyUtils.toBigInteger(
+                        share.getMinPriceIncrement()))
+                .set(Share.SHARE.API_TRADE_AVAILABLE_FLAG, share.getApiTradeAvailableFlag())
+                .set(Share.SHARE.REAL_EXCHANGE, share.getRealExchange().toString())
+                .set(Share.SHARE.POSITION_UID, UUID.fromString(share.getPositionUid()))
+                .set(Share.SHARE.ASSET_UID, UUID.fromString(share.getAssetUid()))
+                .set(Share.SHARE.INSTRUMENT_EXCHANGE, share.getInstrumentExchange().toString())
+                .set(Share.SHARE.FOR_IIS_FLAG, share.getForIisFlag())
+                .set(Share.SHARE.FOR_QUAL_INVESTOR_FLAG, share.getForQualInvestorFlag())
+                .set(Share.SHARE.WEEKEND_FLAG, share.getWeekendFlag())
+                .set(Share.SHARE.BLOCKED_TCA_FLAG, share.getBlockedTcaFlag())
+                .set(Share.SHARE.LIQUIDITY_FLAG, share.getLiquidityFlag())
+                .set(Share.SHARE.FIRST_1MIN_CANDLE_DATE, DateUtils.toLocalDateTime(
+                        share.getFirst1MinCandleDate()))
+                .set(Share.SHARE.FIRST_1DAY_CANDLE_DATE, DateUtils.toLocalDateTime(
+                        share.getFirst1DayCandleDate()))
+                .set(Share.SHARE.BRAND, BrandUtils.toString(share.getBrand()))
+                .set(Share.SHARE.DLONG_CLIENT, MoneyUtils.toBigInteger(share.getDlongClient()))
+                .set(Share.SHARE.DSHORT_CLIENT, MoneyUtils.toBigInteger(share.getDshortClient()))
+                .where(Share.SHARE.UID.eq(UUID.fromString(share.getUid())))
+                .execute();
+    }
+
+    public int delete(UUID uid) {
+        return dslContext.deleteFrom(Share.SHARE)
+                .where(Share.SHARE.UID.eq(uid))
+                .execute();
     }
 }
