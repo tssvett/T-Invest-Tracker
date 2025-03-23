@@ -28,9 +28,6 @@ springdoc:
 invest:
   token: ${INVEST_TOKEN}
 
-  initializer:
-    enabled: false #Когда надо заполнять данными бд, поменять на true
-
 resilience4j:
   ratelimiter:
     instances:
