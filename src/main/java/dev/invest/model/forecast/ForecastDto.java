@@ -1,7 +1,6 @@
 package dev.invest.model.forecast;
 
 import jakarta.validation.constraints.NotBlank;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -10,7 +9,7 @@ public record ForecastDto(
         UUID id,
         @NotBlank String currency,
         @NotBlank String ticker,
-        Integer recommendation,
+        String recommendation,
         BigDecimal currentPrice,
         BigDecimal consensus,
         BigDecimal minTarget,

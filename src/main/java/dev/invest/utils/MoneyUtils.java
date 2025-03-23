@@ -23,6 +23,17 @@ public class MoneyUtils {
         return BigInteger.valueOf(units);
     }
 
+    public static BigInteger toBigInteger(MoneyValue moneyValue) {
+        long units = moneyValue.getUnits();
+        //int nano = moneyValue.getNano();
+
+        return BigInteger.valueOf(units);
+    }
+
+    public static BigInteger toBigInteger(BigDecimal quotation) {
+        return BigInteger.valueOf(quotation.longValue());
+    }
+
     public static BigDecimal toBigDecimal(MoneyValue moneyValue) {
         if (moneyValue == null) {
             return null;

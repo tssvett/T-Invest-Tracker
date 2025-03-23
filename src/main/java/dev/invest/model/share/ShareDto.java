@@ -9,8 +9,9 @@ import java.util.UUID;
  */
 public record ShareDto(
         UUID id,
-        @NotBlank String currency,
+        UUID assetId,
         @NotBlank String ticker,
+        @NotBlank String currency,
         @NotBlank String name,
         @NotBlank String exchange,
         @NotBlank String sector,

@@ -52,20 +52,6 @@ public class ShareController {
         return null;
     }
 
-    @PostMapping
-    @Operation(summary = "Создать новую акцию", tags = {SHARE_CONTROLLER})
-    public ShareDto createShare(@RequestBody @Valid CreateShareRequest request) {
-        //TODO: Business logic
-        return null;
-    }
-
-    @PutMapping("/{uuid}")
-    @Operation(summary = "Обновить акцию по идентификатору", tags = {SHARE_CONTROLLER})
-    public ShareDto updateShare(@RequestBody @Valid UpdateShareRequest request, @PathVariable UUID uuid) {
-        //TODO: Business logic
-        return null;
-    }
-
     @DeleteMapping("/{uuid}")
     @Operation(summary = "Удалить акцию по идентификатору", tags = {SHARE_CONTROLLER})
     public void deleteShare(@PathVariable UUID uuid) {

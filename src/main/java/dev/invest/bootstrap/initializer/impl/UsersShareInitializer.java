@@ -1,19 +1,23 @@
-package dev.invest.service;
+package dev.invest.bootstrap.initializer.impl;
 
+import dev.invest.bootstrap.initializer.Initializer;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ShareRecord;
 import dev.invest.db.repository.UsersShareRepository;
 import dev.invest.model.user.UserDto;
+import dev.invest.service.ShareService;
+import dev.invest.service.UserService;
 import dev.invest.utils.GenerateUtils;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
-public class UsersShareService implements Initializer {
+public class UsersShareInitializer implements Initializer {
     private final UsersShareRepository usersShareRepository;
     private final UserService userService;
     private final ShareService shareService;
