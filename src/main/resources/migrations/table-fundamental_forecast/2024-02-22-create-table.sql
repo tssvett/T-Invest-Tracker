@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS invest.fundamental_forecast (
     total_debt_change_five_years DOUBLE PRECISION,
     ev_to_sales DOUBLE PRECISION,
     CONSTRAINT fundamental_forecast_pk PRIMARY KEY (asset_uid),
-    CONSTRAINT fundamental_forecast_fk FOREIGN KEY (asset_uid) REFERENCES invest.share (asset_uid)
+    CONSTRAINT fundamental_forecast_fk FOREIGN KEY (asset_uid) REFERENCES invest.share (asset_uid) ON DELETE CASCADE
 );
 
 COMMENT ON TABLE invest.fundamental_forecast IS 'Таблица для хранения фундаментальных показателей по активу.';
