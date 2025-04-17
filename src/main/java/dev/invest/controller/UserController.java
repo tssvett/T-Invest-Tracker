@@ -1,6 +1,5 @@
 package dev.invest.controller;
 
-import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
 import dev.invest.model.user.UpdateUserRequest;
 import dev.invest.model.user.UserDto;
@@ -13,6 +12,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@Validated
 @RestController
 @Tag(name = UserController.USER_CONTROLLER, description = "API для работы с пользователями")
 @RequestMapping(UserController.API_USER)
@@ -35,7 +36,6 @@ public class UserController {
     static final String API_USER = API_PREFIX + "/user";
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @GetMapping
     @Operation(
