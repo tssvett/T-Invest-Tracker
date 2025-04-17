@@ -6,6 +6,7 @@ import dev.invest.utils.BrandUtils;
 import dev.invest.utils.DateUtils;
 import dev.invest.utils.MoneyUtils;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -128,10 +129,10 @@ public class ShareRepository {
                 .fetch();
     }
 
-    public ShareRecord getById(UUID uid) {
+    public Optional<ShareRecord> getById(UUID uid) {
         return dslContext.selectFrom(Share.SHARE)
                 .where(Share.SHARE.UID.eq(uid))
-                .fetchOne();
+                .fetchOptional();
     }
 
     public int update(ru.tinkoff.piapi.contract.v1.Share share) {
@@ -187,9 +188,9 @@ public class ShareRepository {
                 .execute();
     }
 
-    public int delete(UUID uid) {
+    public Optional<ShareRecord> delete(UUID uid) {
         return dslContext.deleteFrom(Share.SHARE)
                 .where(Share.SHARE.UID.eq(uid))
-                .execute();
+                .returning().fetchOptional();
     }
 }

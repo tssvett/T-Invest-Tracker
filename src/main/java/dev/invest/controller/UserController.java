@@ -1,6 +1,5 @@
 package dev.invest.controller;
 
-import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
 import dev.invest.model.user.UpdateUserRequest;
 import dev.invest.model.user.UserDto;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@Validated
 @RestController
 @Tag(name = UserController.USER_CONTROLLER, description = "API для работы с пользователями")
 @RequestMapping(UserController.API_USER)
@@ -33,7 +36,6 @@ public class UserController {
     static final String API_USER = API_PREFIX + "/user";
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @GetMapping
     @Operation(
@@ -50,8 +52,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     public UserDto findUserByUid(@PathVariable UUID uuid) {
-        //TODO: Business logic
-        return null;
+        return userService.getByUid(uuid);
     }
 
     @PostMapping
@@ -59,9 +60,9 @@ public class UserController {
             summary = "Создать нового пользователя",
             tags = {USER_CONTROLLER}
     )
+    @ResponseStatus(value = HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid CreateUserRequest request) {
-        //return userService.create(request);
-        return null;
+        return userService.create(request);
     }
 
     @PutMapping("/{uuid}")
@@ -70,8 +71,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     public UserDto updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable UUID uuid) {
-        //TODO: Business logic
-        return null;
+        return userService.update(uuid, request);
     }
 
     @DeleteMapping("/{uuid}")
@@ -79,7 +79,8 @@ public class UserController {
             summary = "Удалить пользователя по идентификатору",
             tags = {USER_CONTROLLER}
     )
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable UUID uuid) {
-        //TODO: Business logic
+        userService.deleteByUid(uuid);
     }
 }
