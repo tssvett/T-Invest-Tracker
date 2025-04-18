@@ -1,32 +1,32 @@
-// src/api/stockService.js
+// src/api/shareService.js
 import axios from './axiosConfig';
 
-const getAllStocks = async () => {
+const getAllShares = async () => {
   try {
-    const response = await axios.get('/stocks');
+    const response = await axios.post('/share/all');
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const getStockById = async (id) => {
+const getShareById = async (id) => {
   try {
-    const response = await axios.get(`/stocks/${id}`);
+    const response = await axios.get(`/share/${id}`);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const addStockToPortfolio = async (stockId) => {
-  try {
-    const response = await axios.post('/portfolio/add', { stockId });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+// const addShareToPortfolio = async (shareId) => {
+//   try {
+//     const response = await axios.post('/share/add', { shareId });
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 const getUserPortfolio = async () => {
   try {
@@ -37,11 +37,11 @@ const getUserPortfolio = async () => {
   }
 };
 
-const stockService = {
-  getAllStocks,
-  getStockById,
-  addStockToPortfolio,
+const shareService = {
+  getAllShares,
+  getShareById,
+  addShareToPortfolio,
   getUserPortfolio
 };
 
-export default stockService;
+export default shareService;

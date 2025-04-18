@@ -1,7 +1,7 @@
 ﻿// src/pages/Portfolio.js
 import React, { useState, useEffect } from 'react';
-import stockService from '../api/stockService';
-import StockDetails from '../components/StockDetails';
+import shareService from '../api/shareService';
+import ShareDetails from '../components/ShareDetails';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
@@ -10,13 +10,13 @@ const Portfolio = () => {
   const [portfolio, setPortfolio] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedStock, setSelectedStock] = useState(null);
+  const [selectedShare, setSelectedShare] = useState(null);
   
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
         setLoading(true);
-        const data = await stockService.getUserPortfolio();
+        const data = await shareService.getUserPortfolio();
         setPortfolio(data);
         setError('');
       } catch (error) {
@@ -30,20 +30,20 @@ const Portfolio = () => {
     fetchPortfolio();
   }, []);
   
-  const handleShowDetails = (stock) => {
-    setSelectedStock(stock);
+  const handleShowDetails = (share) => {
+    setSelectedShare(share);
   };
   
   const handleCloseDetails = () => {
-    setSelectedStock(null);
+    setSelectedShare(null);
   };
   
   const prepareChartData = () => {
-    if (!portfolio || !portfolio.stocks) return [];
+    if (!portfolio || !portfolio.shares) return [];
     
-    return portfolio.stocks.map(stock => ({
-      name: stock.ticker,
-      value: stock.currentPrice * stock.quantity
+    return portfolio.shares.map(share => ({
+      name: share.ticker,
+      value: share.currentPrice * share.quantity
     }));
   };
   
@@ -68,7 +68,7 @@ const Portfolio = () => {
     );
   }
   
-  if (!portfolio || !portfolio.stocks || portfolio.stocks.length === 0) {
+  if (!portfolio || !portfolio.shares || portfolio.shares.length === 0) {
     return (
       <div className="container mt-5">
         <div className="alert alert-info" role="alert">
@@ -105,7 +105,7 @@ const Portfolio = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Количество акций</h5>
-              <h2 className="card-text">{portfolio.stocks.length}</h2>
+              <h2 className="card-text">{portfolio.shares.length}</h2>
             </div>
           </div>
         </div>
@@ -131,17 +131,17 @@ const Portfolio = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {portfolio.stocks.map(stock => (
-                      <tr key={stock.id}>
-                        <td>{stock.ticker}</td>
-                        <td>{stock.name}</td>
-                        <td>{stock.quantity}</td>
-                        <td>${stock.currentPrice}</td>
-                        <td>${(stock.currentPrice * stock.quantity).toFixed(2)}</td>
+                    {portfolio.shares.map(share => (
+                      <tr key={share.id}>
+                        <td>{share.ticker}</td>
+                        <td>{share.name}</td>
+                        <td>{share.quantity}</td>
+                        <td>${share.currentPrice}</td>
+                        <td>${(share.currentPrice * share.quantity).toFixed(2)}</td>
                         <td>
                           <button 
                             className="btn btn-sm btn-primary"
-                            onClick={() => handleShowDetails(stock)}
+                            onClick={() => handleShowDetails(share)}
                           >
                             Детали
                           </button>
@@ -156,9 +156,9 @@ const Portfolio = () => {
         </div>
         
         <div className="col-md-5">
-          {selectedStock ? (
-            <StockDetails 
-              stock={selectedStock} 
+          {selectedShare ? (
+            <ShareDetails 
+              share={selectedShare} 
               onClose={handleCloseDetails} 
             />
           ) : (

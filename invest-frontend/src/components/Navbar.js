@@ -24,7 +24,7 @@ const Navbar = () => {
             {currentUser && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/stocks">Акции</Link>
+                  <Link className="nav-link" to="/shares">Акции</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/portfolio">Мой портфель</Link>

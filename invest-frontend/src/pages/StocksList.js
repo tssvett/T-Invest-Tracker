@@ -1,21 +1,21 @@
-﻿// src/pages/StocksList.js
+﻿// src/pages/SharesList.js
 import React, { useState, useEffect } from 'react';
-import stockService from '../api/stockService';
-import StockCard from '../components/StockCard';
-import StockDetails from '../components/StockDetails';
+import shareService from '../api/shareService';
+import ShareCard from '../components/ShareCard';
+import ShareDetails from '../components/ShareDetails';
 
-const StocksList = () => {
-  const [stocks, setStocks] = useState([]);
+const SharesList = () => {
+  const [shares, setShares] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedStock, setSelectedStock] = useState(null);
+  const [selectedShare, setSelectedShare] = useState(null);
   
   useEffect(() => {
-    const fetchStocks = async () => {
+    const fetchShares = async () => {
       try {
         setLoading(true);
-        const data = await stockService.getAllStocks();
-        setStocks(data);
+        const data = await shareService.getAllShares();
+        setShares(data);
         setError('');
       } catch (error) {
         console.error('Ошибка при загрузке списка акций:', error);
@@ -25,15 +25,15 @@ const StocksList = () => {
       }
     };
     
-    fetchStocks();
+    fetchShares();
   }, []);
   
-  const handleShowDetails = (stock) => {
-    setSelectedStock(stock);
+  const handleShowDetails = (share) => {
+    setSelectedShare(share);
   };
   
   const handleCloseDetails = () => {
-    setSelectedStock(null);
+    setSelectedShare(null);
   };
   
   if (loading) {
@@ -63,14 +63,14 @@ const StocksList = () => {
       
       <div className="row">
         <div className="col-md-7">
-          <div className="stocks-scroll" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-            {stocks.length === 0 ? (
+          <div className="shares-scroll" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+            {shares.length === 0 ? (
               <p>Акции не найдены</p>
             ) : (
-              stocks.map(stock => (
-                <StockCard
-                  key={stock.id}
-                  stock={stock}
+              shares.map(share => (
+                <ShareCard
+                  key={share.id}
+                  share={share}
                   onShowDetails={handleShowDetails}
                 />
               ))
@@ -79,9 +79,9 @@ const StocksList = () => {
         </div>
         
         <div className="col-md-5">
-          {selectedStock ? (
-            <StockDetails 
-              stock={selectedStock} 
+          {selectedShare ? (
+            <ShareDetails 
+              share={selectedShare} 
               onClose={handleCloseDetails} 
             />
           ) : (
@@ -95,4 +95,4 @@ const StocksList = () => {
   );
 };
 
-export default StocksList;
+export default SharesList;

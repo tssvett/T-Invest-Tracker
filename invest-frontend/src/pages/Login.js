@@ -33,7 +33,7 @@ const Login = () => {
       setLoading(true);
       setError('');
       await authService.login(username, password);
-      navigate('/stocks');
+      navigate('/shares');
     } catch (error) {
       setError(
         error.response?.data?.message || 

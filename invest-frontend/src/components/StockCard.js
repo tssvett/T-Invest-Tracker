@@ -1,11 +1,11 @@
-﻿// src/components/StockCard.js
+﻿// src/components/ShareCard.js
 import React from 'react';
-import stockService from '../api/stockService';
+import shareService from '../api/shareService';
 
-const StockCard = ({ stock, onShowDetails }) => {
+const ShareCard = ({ share, onShowDetails }) => {
   const handleAddToPortfolio = async () => {
     try {
-      await stockService.addStockToPortfolio(stock.id);
+      await shareService.addShareToPortfolio(share.id);
       alert('Акция успешно добавлена в портфель');
     } catch (error) {
       console.error('Ошибка при добавлении акции в портфель:', error);
@@ -16,13 +16,13 @@ const StockCard = ({ stock, onShowDetails }) => {
   return (
     <div className="card mb-3">
       <div className="card-body">
-        <h5 className="card-title">{stock.name} ({stock.ticker})</h5>
-        <p className="card-text">Текущая цена: ${stock.currentPrice}</p>
-        <p className="card-text">Изменение: {stock.change}%</p>
+        <h5 className="card-title">{share.name} ({share.ticker})</h5>
+        <p className="card-text">Текущая цена: ${stock.curresharece}</p>
+        <p className="card-text">Изменение: {stock.chashare</p>
         <div className="d-flex justify-content-between mt-3">
           <button 
             className="btn btn-primary"
-            onClick={() => onShowDetails(stock)}
+            onClick={() => onShowDetails(share)}
           >
             Подробнее
           </button>
@@ -38,4 +38,4 @@ const StockCard = ({ stock, onShowDetails }) => {
   );
 };
 
-export default StockCard;
+export default ShareCard;
