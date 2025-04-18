@@ -117,8 +117,10 @@ public class GenerateUtils {
     }
 
     public static CreateUserRequest buildCreateUserRequest() {
-        return new CreateUserRequest(RandomStringUtils.secureStrong().nextAlphabetic(10),
-                RandomStringUtils.secureStrong().nextAlphanumeric(20));
+        return new CreateUserRequest(
+                RandomStringUtils.randomAlphabetic(20) + "@test.com",
+                RandomStringUtils.randomAlphabetic(20),
+                RandomStringUtils.randomAlphabetic(20));
     }
 
     public static List<CreateUserRequest> buildCreateUserRequestList() {

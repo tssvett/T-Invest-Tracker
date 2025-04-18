@@ -2,6 +2,7 @@ package dev.invest.controller;
 
 import dev.invest.bootstrap.DatabaseBootstrap;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
         name = InitializeController.INITIALIZER_CONTROLLER,
         description = "API Инициализатора бд приложения"
 )
+@SecurityRequirement(name = "JWT")
 @RequestMapping(InitializeController.API_INITIALIZER)
 public class InitializeController {
     static final String INITIALIZER_CONTROLLER = "initializer-controller";

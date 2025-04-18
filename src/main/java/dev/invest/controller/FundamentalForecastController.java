@@ -5,6 +5,7 @@ import dev.invest.model.fundamental.FundamentalDto;
 import dev.invest.model.fundamental.UpdateFundamentalRequest;
 import dev.invest.service.FundamentalService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
         name = FundamentalForecastController.FUNDAMENTAL_FORECAST_CONTROLLER,
         description = "API Фундаментальных прогнозов по акциям"
 )
+@SecurityRequirement(name = "JWT")
 @RequestMapping(FundamentalForecastController.API_FUNDAMENTAL_FORECAST)
 public class FundamentalForecastController {
     static final String FUNDAMENTAL_FORECAST_CONTROLLER = "fundamental-controller";

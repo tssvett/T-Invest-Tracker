@@ -1,10 +1,11 @@
 package dev.invest.controller;
 
-import dev.invest.model.user.CreateUserRequest;
+import dev.invest.model.user.UpdatePasswordUserRequest;
 import dev.invest.model.user.UpdateUserRequest;
 import dev.invest.model.user.UserDto;
 import dev.invest.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -15,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = UserController.USER_CONTROLLER, description = "API для работы с пользователями")
 @RequestMapping(UserController.API_USER)
+@SecurityRequirement(name = "JWT")
 @RequiredArgsConstructor
 public class UserController {
     static final String USER_CONTROLLER = "user-controller";
@@ -55,16 +57,6 @@ public class UserController {
         return userService.getByUid(uuid);
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Создать нового пользователя",
-            tags = {USER_CONTROLLER}
-    )
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody @Valid CreateUserRequest request) {
-        return userService.create(request);
-    }
-
     @PutMapping("/{uuid}")
     @Operation(
             summary = "Обновить пользователя по идентификатору",
@@ -72,6 +64,16 @@ public class UserController {
     )
     public UserDto updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable UUID uuid) {
         return userService.update(uuid, request);
+    }
+
+    @PatchMapping("/password")
+    @Operation(
+            summary = "Обновление пароля пользователя",
+            tags = {USER_CONTROLLER}
+    )
+    @SecurityRequirement(name = "JWT")
+    public UserDto updatePassword(@Valid @RequestBody UpdatePasswordUserRequest request) {
+        return userService.updatePassword(request);
     }
 
     @DeleteMapping("/{uuid}")
