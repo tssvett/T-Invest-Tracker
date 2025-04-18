@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ForecastService {
     private final ForecastRepository forecastRepository;
-    private final ShareService shareService;
     private final ForecastMapper forecastMapper;
 
     public List<ForecastDto> getAll() {

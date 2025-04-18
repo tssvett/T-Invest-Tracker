@@ -2,7 +2,9 @@ package dev.invest.db.repository;
 
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.Users;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord;
+import dev.invest.model.user.UpdateUserRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -18,13 +20,13 @@ public class UserRepository {
                 .fetch();
     }
 
-    public UsersRecord findById(UUID userId) {
+    public Optional<UsersRecord> getById(UUID userId) {
         return dslContext.selectFrom(Users.USERS)
                 .where(Users.USERS.USER_ID.eq(userId))
-                .fetchOne();
+                .fetchOptional();
     }
 
-    public int save(UsersRecord usersRecord) {
+    public UsersRecord save(UsersRecord usersRecord) {
         UUID userId = usersRecord.getUserId() == null
                 ? UUID.randomUUID()
                 : usersRecord.getUserId();
@@ -36,20 +38,19 @@ public class UserRepository {
                         usersRecord.getLogin(),
                         usersRecord.getPassword())
                 .onDuplicateKeyIgnore()
-                .execute();
+                .returning().fetchOne();
     }
 
-    public int update(UsersRecord usersRecord) {
+    public Optional<UsersRecord> update(UUID id,UpdateUserRequest usersRecord) {
         return dslContext.update(Users.USERS)
-                .set(Users.USERS.LOGIN, usersRecord.getLogin())
-                .set(Users.USERS.PASSWORD, usersRecord.getPassword())
-                .where(Users.USERS.USER_ID.eq(usersRecord.getUserId()))
-                .execute();
+                .set(Users.USERS.LOGIN, usersRecord.login())
+                .where(Users.USERS.USER_ID.eq(id))
+                .returning().fetchOptional();
     }
 
-    public int delete(UUID userId) {
+    public Optional<UsersRecord> delete(UUID userId) {
         return dslContext.deleteFrom(Users.USERS)
                 .where(Users.USERS.USER_ID.eq(userId))
-                .execute();
+                .returning().fetchOptional();
     }
 }

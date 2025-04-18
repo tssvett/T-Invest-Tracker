@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS invest.users (
     user_id UUID NOT NULL,
-    login text NOT NULL,
+    login text NOT NULL UNIQUE,
     password text NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
