@@ -17,8 +17,8 @@ const ShareCard = ({ share, onShowDetails }) => {
     <div className="card mb-3">
       <div className="card-body">
         <h5 className="card-title">{share.name} ({share.ticker})</h5>
-        <p className="card-text">Текущая цена: ${stock.curresharece}</p>
-        <p className="card-text">Изменение: {stock.chashare</p>
+        <p className="card-text">Текущая цена: ${share.curresharece}</p>
+        <p className="card-text">Изменение: {share.chashare}</p>
         <div className="d-flex justify-content-between mt-3">
           <button 
             className="btn btn-primary"

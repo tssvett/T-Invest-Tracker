@@ -69,7 +69,6 @@ const register = async (username, email, password) => {
 //         // Имитация успешной регистрации
 //         resolve({ success: true, message: 'Пользователь успешно зарегистрирован' });
         
-//         // Можно добавить имитацию ошибок, например:
 //         // if (username === 'existingUser') {
 //         //   reject({ response: { data: { message: 'Пользователь с таким именем уже существует' } } });
 //         // }
@@ -78,11 +77,10 @@ const register = async (username, email, password) => {
 //   };
 
   
-// Добавьте register в объект authService
 const authService = {
   login,
   logout,
-  register, // добавили новый метод
+  register, 
   getCurrentUser,
   isAuthenticated
 };

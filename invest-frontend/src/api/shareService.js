@@ -40,7 +40,7 @@ const getUserPortfolio = async () => {
 const shareService = {
   getAllShares,
   getShareById,
-  addShareToPortfolio,
+  // addShareToPortfolio,
   getUserPortfolio
 };
 
