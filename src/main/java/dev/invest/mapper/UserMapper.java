@@ -22,16 +22,15 @@ public abstract class UserMapper {
     @Mapping(target = "id", source = "userId")
     public abstract UserDto toModel(UsersRecord userRecord);
 
-    @Mapping(source = "id", target = "userId")
+
     public abstract UsersRecord toEntity(User user);
 
-    @Mapping(source = "userId", target = "id")
     public abstract User toUser(UsersRecord userRecord);
-
 
 
     @Mapping(target = "userId", ignore = true)
     @Mapping(source = "password", target = "password", qualifiedByName = "encryptPassword")
+    @Mapping(target = "role", constant = "ROLE_USER")
     public abstract UsersRecord toEntity(CreateUserRequest userCreateDto);
 
     @Named("encryptPassword")

@@ -8,10 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
@@ -22,20 +25,23 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenStoreService tokenStoreService;
+    private final UserService userService;
 
     public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse response) {
         var authentication = new UsernamePasswordAuthenticationToken(
                 authRequest.login(), authRequest.password());
 
         try {
-            authenticationManager.authenticate(authentication);
+            Authentication authenticate = authenticationManager.authenticate(authentication);
         } catch (BadCredentialsException e) {
             throw new IllegalArgumentException("Invalid email or password.", e);
         } catch (AuthenticationException e) {
             throw new IllegalArgumentException("Authentication error");
         }
 
-        String accessToken = jwtService.generateAccessToken(authRequest.login());
+        List<String> roles = List.of(userService.getRoles(authRequest.login()).getName());
+        UUID userId = userService.getUserId(authRequest.login());
+        String accessToken = jwtService.generateAccessToken(authRequest.login(), roles, userId);
         String refreshToken = jwtService.generateRefreshToken(authRequest.login());
 
         // Добавляем refresh token в cookie
@@ -74,6 +80,20 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid token structure", e);
         }
 
+        List<String> roles;
+        try {
+            roles = jwtService.extractRoles(oldRefreshToken);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid token structure", e);
+        }
+
+        UUID userId;
+        try {
+            userId = jwtService.extractUserId(oldRefreshToken);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid token structure", e);
+        }
+
         // 5. Полная проверка валидности токена
         if (!jwtService.isTokenValid(oldRefreshToken, username) ||
                 !tokenStoreService.isRefreshTokenValid(oldRefreshToken)) {
@@ -83,8 +103,9 @@ public class AuthenticationService {
         // 6. Инвалидация старого токена
         tokenStoreService.invalidateRefreshToken(oldRefreshToken);
 
+
         // 7. Генерация новых токенов
-        String newAccessToken = jwtService.generateAccessToken(username);
+        String newAccessToken = jwtService.generateAccessToken(username, roles, userId);
         String newRefreshToken = jwtService.generateRefreshToken(username);
 
         // 8. Обновление хранилища и кук

@@ -1,5 +1,6 @@
 package dev.invest.service;
 
+import dev.invest.db.jooq.org.jooq.generated.invest.enums.UserRole;
 import dev.invest.db.repository.UserRepository;
 import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
@@ -115,5 +116,19 @@ public class UserService implements UserDetailsManager {
         return userRepository.findByLogin(username)
                 .map(userMapper::toUser)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + username + " не найден"));
+    }
+
+    public UserRole getRoles(String login) {
+        return userRepository
+                .findByLogin(login)
+                .map(dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord::getRole)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не найден"));
+    }
+
+    public UUID getUserId(String login) {
+        return userRepository
+                .findByLogin(login)
+                .map(dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord::getUserId)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не найден"));
     }
 }

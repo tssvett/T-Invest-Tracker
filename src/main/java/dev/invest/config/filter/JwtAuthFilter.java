@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String jwt = authHeader.substring(7);  // Убираем "Bearer "
 
-        String username = jwtService.extractUsername(jwt);  // Пример: извлекаем username из токена
+        String username = jwtService.extractUsername(jwt);  // Извлекаем username из токена
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);

@@ -7,14 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public record User(
-        UUID id,
+        UUID userId,
         String login,
         String password,
-        String email
+        String email,
+        Role role
 ) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(role);
     }
 
     @Override

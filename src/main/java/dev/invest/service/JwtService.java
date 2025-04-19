@@ -2,6 +2,8 @@ package dev.invest.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,7 +28,7 @@ public class JwtService {
      * @return строковое представление сгенерированного JWT
      * @throws IllegalArgumentException если {@code username} пустой или null
      */
-    public String generateAccessToken(String username) {
+    public String generateAccessToken(String username, List<String> roles, UUID userId) {
 
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be empty or null.");
@@ -38,6 +40,8 @@ public class JwtService {
                 .issuedAt(now)
                 .expiresAt(now.plus(10, ChronoUnit.MINUTES))
                 .subject(username)
+                .claim("roles", roles)
+                .claim("userId", userId.toString())
                 .build();
 
         String token = this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -108,6 +112,20 @@ public class JwtService {
         log.info("Extracted username from accessToken: {}", username);
 
         return username;
+    }
+
+    public List<String> extractRoles(String token) {
+        Jwt jwt = decodeJwt(token);
+        return jwt.getClaimAsStringList("roles");
+    }
+
+    public UUID extractUserId(String token) {
+        Jwt jwt = decodeJwt(token);
+        return UUID.fromString(jwt.getClaimAsString("userId"));
+    }
+
+    public UUID extractUserId(Jwt jwt) {
+        return UUID.fromString(jwt.getClaimAsString("userId"));
     }
 
     public boolean isRefreshToken(String token) {
