@@ -56,7 +56,7 @@ public class UserController {
             summary = "Получить пользователя по его идентификатору",
             tags = {USER_CONTROLLER}
     )
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal) or hasRole('ADMIN')")
+    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
     public UserDto findUserByUid(@PathVariable UUID uuid) {
         return userService.getByUid(uuid);
     }
@@ -66,7 +66,7 @@ public class UserController {
             summary = "Обновить пользователя по идентификатору",
             tags = {USER_CONTROLLER}
     )
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal) or hasRole('ADMIN')")
+    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
     public UserDto updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable UUID uuid) {
         return userService.update(uuid, request);
     }
@@ -87,7 +87,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal) or hasRole('ADMIN')")
+    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
     public void deleteUser(@PathVariable UUID uuid) {
         userService.deleteByUid(uuid);
     }

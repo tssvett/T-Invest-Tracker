@@ -118,11 +118,11 @@ public class UserService implements UserDetailsManager {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + username + " не найден"));
     }
 
-    public UserRole getRoles(String login) {
-        return userRepository
+    public List<UserRole> getRoles(String login) {
+        return List.of(userRepository
                 .findByLogin(login)
                 .map(dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord::getRole)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не найден")));
     }
 
     public UUID getUserId(String login) {

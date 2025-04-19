@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -28,19 +30,20 @@ public class JwtService {
      * @return строковое представление сгенерированного JWT
      * @throws IllegalArgumentException если {@code username} пустой или null
      */
-    public String generateAccessToken(String username, List<String> roles, UUID userId) {
+    public String generateAccessToken(String username, List<SimpleGrantedAuthority> roles, UUID userId) {
 
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be empty or null.");
         }
 
         Instant now = Instant.now();
+        List<String> rolesList = roles.stream().map(GrantedAuthority::getAuthority).toList();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("invest.ru")
                 .issuedAt(now)
                 .expiresAt(now.plus(10, ChronoUnit.MINUTES))
                 .subject(username)
-                .claim("roles", roles)
+                .claim("roles", rolesList)
                 .claim("userId", userId.toString())
                 .build();
 
@@ -114,9 +117,11 @@ public class JwtService {
         return username;
     }
 
-    public List<String> extractRoles(String token) {
+    public List<SimpleGrantedAuthority> extractRoles(String token) {
         Jwt jwt = decodeJwt(token);
-        return jwt.getClaimAsStringList("roles");
+        return jwt.getClaimAsStringList("roles").stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     public UUID extractUserId(String token) {

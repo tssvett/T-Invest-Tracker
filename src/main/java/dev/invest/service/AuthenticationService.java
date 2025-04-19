@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,9 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Authentication error");
         }
 
-        List<String> roles = List.of(userService.getRoles(authRequest.login()).getName());
+        List<SimpleGrantedAuthority> roles = userService.getRoles(authRequest.login()).stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .toList();
         UUID userId = userService.getUserId(authRequest.login());
         String accessToken = jwtService.generateAccessToken(authRequest.login(), roles, userId);
         String refreshToken = jwtService.generateRefreshToken(authRequest.login());
@@ -80,7 +83,7 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid token structure", e);
         }
 
-        List<String> roles;
+        List<SimpleGrantedAuthority> roles;
         try {
             roles = jwtService.extractRoles(oldRefreshToken);
         } catch (JwtException | IllegalArgumentException e) {
