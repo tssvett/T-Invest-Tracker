@@ -1,6 +1,9 @@
 ### Jooq Generated Files ###
 src/main/java/dev/invest/db/jooq/
 
+### env ###
+docker/.env
+
 ### STS ###
 .apt_generated
 .classpath

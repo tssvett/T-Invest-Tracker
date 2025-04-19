@@ -26,6 +26,18 @@ public class UserRepository {
                 .fetchOptional();
     }
 
+    public Optional<UsersRecord> findByEmail(String email) {
+        return dslContext.selectFrom(Users.USERS)
+                .where(Users.USERS.EMAIL.eq(email))
+                .fetchOptional();
+    }
+
+    public Optional<UsersRecord> findByLogin(String login) {
+        return dslContext.selectFrom(Users.USERS)
+                .where(Users.USERS.LOGIN.eq(login))
+                .fetchOptional();
+    }
+
     public UsersRecord save(UsersRecord usersRecord) {
         UUID userId = usersRecord.getUserId() == null
                 ? UUID.randomUUID()
@@ -33,17 +45,27 @@ public class UserRepository {
         return dslContext.insertInto(Users.USERS,
                         Users.USERS.USER_ID,
                         Users.USERS.LOGIN,
-                        Users.USERS.PASSWORD)
+                        Users.USERS.PASSWORD,
+                        Users.USERS.EMAIL)
                 .values(userId,
                         usersRecord.getLogin(),
-                        usersRecord.getPassword())
+                        usersRecord.getPassword(),
+                        usersRecord.getEmail())
                 .onDuplicateKeyIgnore()
                 .returning().fetchOne();
     }
 
-    public Optional<UsersRecord> update(UUID id,UpdateUserRequest usersRecord) {
+    public Optional<UsersRecord> update(UUID id, UpdateUserRequest userDto) {
         return dslContext.update(Users.USERS)
-                .set(Users.USERS.LOGIN, usersRecord.login())
+                .set(Users.USERS.LOGIN, userDto.login())
+                .set(Users.USERS.EMAIL, userDto.email())
+                .where(Users.USERS.USER_ID.eq(id))
+                .returning().fetchOptional();
+    }
+
+    public Optional<UsersRecord> updatePassword(UUID id, String password) {
+        return dslContext.update(Users.USERS)
+                .set(Users.USERS.PASSWORD, password)
                 .where(Users.USERS.USER_ID.eq(id))
                 .returning().fetchOptional();
     }

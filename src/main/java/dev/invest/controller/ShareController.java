@@ -5,6 +5,7 @@ import dev.invest.model.page.Pagination;
 import dev.invest.model.share.ShareDto;
 import dev.invest.service.ShareService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping(ShareController.API_SHARE)
+@SecurityRequirement(name = "JWT")
 @Tag(name = ShareController.SHARE_CONTROLLER, description = "API для работы с акциями")
 public class ShareController {
     static final String SHARE_CONTROLLER = "share-controller";

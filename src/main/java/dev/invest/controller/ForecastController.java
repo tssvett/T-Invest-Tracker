@@ -5,6 +5,7 @@ import dev.invest.model.forecast.ForecastDto;
 import dev.invest.model.forecast.UpdateForecastRequest;
 import dev.invest.service.ForecastService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ForecastController.API_FORECAST)
+@SecurityRequirement(name = "JWT")
 @Tag(name = ForecastController.FORECAST_CONTROLLER, description = "API Прогнозов по акциям")
 public class ForecastController {
     static final String FORECAST_CONTROLLER = "forecast-controller";
