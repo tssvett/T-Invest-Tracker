@@ -120,12 +120,15 @@ dependencies {
     implementation(Libraries.RATE_LIMITER)
 
 
-    // Spring Boot Starter Security
-    implementation(Libraries.SPRING_BOOT_STARTER_SECURITY)
-    // JJWT для работы с JWT токенами.
-    //implementation(Libraries.JJWT_API)
-    //implementation(Libraries.JJWT_IMPL)
-    //implementation(Libraries.JJWT_JACKSON)
+    // Spring Boot Starter Security (для JWT, PasswordEncoder и security)
+    implementation("org.springframework.boot:spring-boot-starter-security:${Versions.SPRING_BOOT_STARTER_SECURITY}")
+
+    // Spring Security OAuth2 Resource Server (для JwtDecoder/JwtEncoder)
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.4.4")
+
+    // Nimbus JOSE + JWT (для JWK, RSAKey и JWT-операций)
+    implementation("com.nimbusds:nimbus-jose-jwt:9.37.3")
+    implementation("org.springframework.security:spring-security-rsa:1.1.5")
 }
 
 jooq {

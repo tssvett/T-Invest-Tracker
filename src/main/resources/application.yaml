@@ -36,9 +36,6 @@ resilience4j:
         limitRefreshPeriod: 1m
         timeoutDuration: 5s
 
-#logging:
- # level:
-  #  org:
-   #   jooq:
-    #    tools:
-     #     LoggerListener: debug
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
