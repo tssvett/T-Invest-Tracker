@@ -35,7 +35,7 @@ public class InitializeController {
             tags = {INITIALIZER_CONTROLLER}
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void init() {
         databaseBootstrap.initialize();
     }
