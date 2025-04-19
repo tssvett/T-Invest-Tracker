@@ -15,10 +15,10 @@ import axios from './axiosConfig';
 // };
 
 const login = async (username, password) => {
-    // Имитация API-вызова
+  // тестовый
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        // Пример проверки учетных данных
+        //пример проверки учетных данных
         if (username === 'admin' && password === 'admin123') {
           const mockUser = { id: 1, username: 'admin', email: 'admin@example.com' };
           const mockToken = 'mock-jwt-token-' + Math.random().toString(36).substring(2);
@@ -30,7 +30,7 @@ const login = async (username, password) => {
         } else {
           reject({ response: { data: { message: 'Неверное имя пользователя или пароль' } } });
         }
-      }, 500); // Имитация задержки сети
+      }, 500); 
     });
 };
 
@@ -51,7 +51,7 @@ const isAuthenticated = () => {
 
 const register = async (username, email, password) => {
   try {
-    const response = await axios.post('/auth/register', {
+    const response = await axios.post('/register', {
       username,
       email,
       password
