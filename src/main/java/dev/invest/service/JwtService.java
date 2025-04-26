@@ -2,6 +2,7 @@ package dev.invest.service;
 
 import dev.invest.exception.InvalidTokenStructureException;
 import dev.invest.exception.JwtExpiredException;
+import dev.invest.model.user.User;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
