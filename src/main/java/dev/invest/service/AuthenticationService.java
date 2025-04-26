@@ -1,6 +1,10 @@
 package dev.invest.service;
 
 
+import dev.invest.exception.CoockiesNotFoundException;
+import dev.invest.exception.InvalidJwtTypeException;
+import dev.invest.exception.InvalidTokenStructureException;
+import dev.invest.exception.JwtExpiredException;
 import dev.invest.model.auth.AuthRequest;
 import dev.invest.model.auth.AuthResponse;
 import jakarta.servlet.http.Cookie;
@@ -60,7 +64,7 @@ public class AuthenticationService {
         // 1. Проверка наличия кук
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            throw new IllegalArgumentException("No cookies found");
+            throw new CoockiesNotFoundException("No cookies found");
         }
 
         // 2. Получение refresh token из cookie
@@ -72,7 +76,7 @@ public class AuthenticationService {
 
         // 3. Проверка типа токена
         if (!jwtService.isRefreshToken(oldRefreshToken)) {
-            throw new IllegalArgumentException("Invalid token type - refresh token expected");
+            throw new InvalidJwtTypeException("Invalid token type - refresh token expected");
         }
 
         // 4. Извлечение имени пользователя
@@ -80,27 +84,27 @@ public class AuthenticationService {
         try {
             username = jwtService.extractUsername(oldRefreshToken);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid token structure", e);
+            throw new InvalidTokenStructureException("Invalid token structure", e);
         }
 
         List<SimpleGrantedAuthority> roles;
         try {
             roles = jwtService.extractRoles(oldRefreshToken);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid token structure", e);
+            throw new InvalidTokenStructureException("Invalid token structure", e);
         }
 
         UUID userId;
         try {
             userId = jwtService.extractUserId(oldRefreshToken);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid token structure", e);
+            throw new InvalidTokenStructureException("Invalid token structure", e);
         }
 
         // 5. Полная проверка валидности токена
         if (!jwtService.isTokenValid(oldRefreshToken, username) ||
                 !tokenStoreService.isRefreshTokenValid(oldRefreshToken)) {
-            throw new IllegalArgumentException("Invalid or expired refresh token");
+            throw new JwtExpiredException("Invalid or expired refresh token");
         }
 
         // 6. Инвалидация старого токена

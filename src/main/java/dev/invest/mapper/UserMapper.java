@@ -1,14 +1,18 @@
 package dev.invest.mapper;
 
+import dev.invest.db.jooq.org.jooq.generated.invest.enums.UserRole;
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord;
 import dev.invest.model.user.CreateUserRequest;
+import dev.invest.model.user.Role;
 import dev.invest.model.user.User;
 import dev.invest.model.user.UserDto;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)

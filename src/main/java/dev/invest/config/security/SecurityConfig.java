@@ -3,7 +3,6 @@ package dev.invest.config.security;
 import dev.invest.config.filter.JwtAuthFilter;
 import dev.invest.service.UserService;
 import java.util.Arrays;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,7 +28,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
-    private final JwtDecoder jwtDecoder;
     private final PasswordEncoder passwordEncoder;
     private final UserService userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
@@ -62,19 +57,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .jwtAuthenticationConverter(jwts -> {
-                                    List<String> roles = jwts.getClaimAsStringList("roles");
-                                    return new JwtAuthenticationToken(
-                                            jwts,
-                                            roles.stream()
-                                                    .map(SimpleGrantedAuthority::new)
-                                                    .toList()
-                                    );
-                                })
-                        )
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

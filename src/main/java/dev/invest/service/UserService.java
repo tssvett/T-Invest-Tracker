@@ -2,6 +2,7 @@ package dev.invest.service;
 
 import dev.invest.db.jooq.org.jooq.generated.invest.enums.UserRole;
 import dev.invest.db.repository.UserRepository;
+import dev.invest.exception.PasswordMismatchException;
 import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
 import dev.invest.model.user.UpdatePasswordUserRequest;
@@ -63,16 +64,16 @@ public class UserService implements UserDetailsManager {
 
         // Поиск пользователя
         dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord user = userRepository.findByLogin(request.username())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with name: " + request.username()));
+                .orElseThrow(() -> new NoSuchElementException("User not found with name: " + request.username()));
 
         // Проверка старого пароля
-        if (!passwordService.checkPassword(user.getPassword(), request.oldPassword())) {
+        if (!passwordService.checkPassword(request.oldPassword(),user.getPassword())) {
             throw new IllegalArgumentException("Invalid old password");
         }
 
         // Проверка что новый пароль отличается от старого
         if (passwordService.checkPassword(request.newPassword(), request.oldPassword())) {
-            throw new IllegalArgumentException("New password must be different from old one");
+            throw new PasswordMismatchException("New password must be different from old one");
         }
 
         // Хеширование и установка нового пароля
