@@ -52,7 +52,7 @@ public class AuthController {
     @PostMapping("/refresh")
     @Operation(
             summary = "Обновление токенов",
-            description = "Генерирует новую пару access/refresh токенов",
+            description = "Генерирует новый access token и устанавливает refresh token в cookie",
             tags = {AUTH_CONTROLLER}
     )
     @SecurityRequirement(name = "JWT")
