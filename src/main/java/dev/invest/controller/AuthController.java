@@ -2,7 +2,10 @@ package dev.invest.controller;
 
 import dev.invest.model.auth.AuthRequest;
 import dev.invest.model.auth.AuthResponse;
+import dev.invest.model.user.CreateUserRequest;
+import dev.invest.model.user.UserDto;
 import dev.invest.service.AuthenticationService;
+import dev.invest.service.RegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +36,7 @@ public class AuthController {
     static final String API_AUTH = API_PREFIX + "/auth";
 
     private final AuthenticationService authenticationService;
+    private final RegistrationService registrationService;
 
     @PostMapping("/login")
     @Operation(
@@ -47,6 +51,16 @@ public class AuthController {
         log.info("Attempting login for user: {}", authRequest.login());
         AuthResponse authResponse = authenticationService.authenticate(authRequest, response);
         return ResponseEntity.ok(authResponse);
+    }
+
+    @PostMapping("/register")
+    @Operation(
+            summary = "Регистрация пользователя",
+            tags = {AUTH_CONTROLLER}
+    )
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public UserDto register(@RequestBody @Valid CreateUserRequest request) {
+        return registrationService.register(request);
     }
 
     @PostMapping("/refresh")
