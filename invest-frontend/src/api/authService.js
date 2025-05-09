@@ -52,8 +52,8 @@ const isAuthenticated = () => {
 const register = async (username, email, password) => {
   try {
     const response = await axios.post('/register', {
-      username,
       email,
+      username,
       password
     });
     return response.data;
