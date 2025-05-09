@@ -2,6 +2,7 @@ package dev.invest.service;
 
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersRecord;
 import dev.invest.db.repository.UserRepository;
+import dev.invest.exception.AlreadyExistsException;
 import dev.invest.mapper.UserMapper;
 import dev.invest.model.user.CreateUserRequest;
 import dev.invest.model.user.UserDto;
@@ -38,7 +39,7 @@ public class RegistrationService {
         }
 
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("User with email '" + email + "' already exists");
+            throw new AlreadyExistsException("User with email '" + email + "' already exists");
         }
     }
 }

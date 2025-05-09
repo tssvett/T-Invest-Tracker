@@ -2,6 +2,7 @@ package dev.invest.model.share;
 
 import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,7 @@ public record ShareDto(
         @NotBlank String figi,
         @NotBlank String shareType,
         BigDecimal dlongClient,
-        BigDecimal dshortClient
+        BigDecimal dshortClient,
+        BigInteger nominal
 ) {
 }

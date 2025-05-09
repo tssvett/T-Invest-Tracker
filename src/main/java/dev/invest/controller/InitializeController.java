@@ -35,7 +35,7 @@ public class InitializeController {
             tags = {INITIALIZER_CONTROLLER}
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    //Тут долден быть админ но спринг не хочет со мной дружить
+    @PreAuthorize("hasRole('ADMIN')")
     public void init() {
         databaseBootstrap.initialize();
     }

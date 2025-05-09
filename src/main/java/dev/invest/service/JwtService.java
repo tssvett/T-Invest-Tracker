@@ -1,5 +1,8 @@
 package dev.invest.service;
 
+import dev.invest.exception.InvalidTokenStructureException;
+import dev.invest.exception.JwtExpiredException;
+import dev.invest.model.user.User;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -153,7 +156,7 @@ public class JwtService {
         } catch (JwtException e) {
             log.error("Invalid JWT accessToken: {}", e.getMessage());
 
-            throw new IllegalArgumentException("Invalid JWT accessToken", e);
+            throw new InvalidTokenStructureException("Invalid JWT accessToken", e);
         }
     }
 
@@ -171,7 +174,7 @@ public class JwtService {
 
             if (invalid) {
                 log.error(errorMessage);
-                throw new IllegalArgumentException(errorMessage);
+                throw new JwtExpiredException(errorMessage);
             }
         }
     }

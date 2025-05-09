@@ -3,7 +3,6 @@ package dev.invest.controller;
 import dev.invest.model.user.UpdatePasswordUserRequest;
 import dev.invest.model.user.UpdateUserRequest;
 import dev.invest.model.user.UserDto;
-import dev.invest.service.JwtService;
 import dev.invest.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,7 +39,6 @@ public class UserController {
     static final String API_USER = API_PREFIX + "/user";
 
     private final UserService userService;
-    private final JwtService jwtService;
 
     @GetMapping
     @Operation(
@@ -56,7 +54,7 @@ public class UserController {
             summary = "Получить пользователя по его идентификатору",
             tags = {USER_CONTROLLER}
     )
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
+    @PreAuthorize("#uuid == authentication.principal.userId or hasRole('ROLE_ADMIN')")
     public UserDto findUserByUid(@PathVariable UUID uuid) {
         return userService.getByUid(uuid);
     }
@@ -66,7 +64,7 @@ public class UserController {
             summary = "Обновить пользователя по идентификатору",
             tags = {USER_CONTROLLER}
     )
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
+    @PreAuthorize("#uuid == authentication.principal.userId or hasRole('ROLE_ADMIN')")
     public UserDto updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable UUID uuid) {
         return userService.update(uuid, request);
     }
@@ -87,7 +85,7 @@ public class UserController {
             tags = {USER_CONTROLLER}
     )
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("#uuid == @jwtService.extractUserId(authentication.principal)")
+    @PreAuthorize("#uuid == authentication.principal.userId or hasRole('ROLE_ADMIN')")
     public void deleteUser(@PathVariable UUID uuid) {
         userService.deleteByUid(uuid);
     }
