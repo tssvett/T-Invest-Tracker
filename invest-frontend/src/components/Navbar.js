@@ -39,7 +39,7 @@ const Navbar = () => {
             {currentUser ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link">Привет, {currentUser.username}</span>
+                  <span className="nav-link">Привет, {}</span>
                 </li>
                 <li className="nav-item">
                   <button className="btn btn-outline-light" onClick={handleLogout}>Выйти</button>

@@ -35,7 +35,7 @@ const Login = () => {
       console.log("do navbar");
 
       await authService.login(username, password);
-      console.log("navbar data", localStorage.getItem('token'));
+      //console.log("navbar data", localStorage.getItem('token'));
       await new Promise(resolve => setTimeout(resolve, 50)); // Задержка
 
       navigate('/shares');
