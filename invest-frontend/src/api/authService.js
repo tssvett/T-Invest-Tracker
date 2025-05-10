@@ -1,63 +1,75 @@
 // src/api/authService.js
 import axios from './axiosConfig';
-
-// const login = async (username, password) => {
-//   try {
-//     const response = await axios.post('/auth/login', { username, password });
-//     if (response.data.token) {
-//       localStorage.setItem('token', response.data.token);
-//       localStorage.setItem('user', JSON.stringify(response.data.user));
-//     }
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+import { jwtDecode } from 'jwt-decode';
 
 const login = async (username, password) => {
-  // тестовый
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        //пример проверки учетных данных
-        if (username === 'admin' && password === 'admin123') {
-          const mockUser = { id: 1, username: 'admin', email: 'admin@example.com' };
-          const mockToken = 'mock-jwt-token-' + Math.random().toString(36).substring(2);
-          
-          localStorage.setItem('token', mockToken);
-          localStorage.setItem('user', JSON.stringify(mockUser));
-          
-          resolve({ user: mockUser, token: mockToken });
-        } else {
-          reject({ response: { data: { message: 'Неверное имя пользователя или пароль' } } });
-        }
-      }, 500); 
+  try {
+    const response = await axios.post('/auth/login', {
+      login: username,
+      password: password
     });
+    const decoded = jwtDecode(response.data.accessToken);
+    console.log("user: ", decoded.userId, "token: ", response.data.accessToken);
+    if (response.data.accessToken) {
+      localStorage.setItem('token', response.data.accessToken);
+      localStorage.setItem('user', decoded.userId);//JSON.stringify(decoded.userId));
+    }
+    console.log("successful auth");
+    return { user: decoded.userId, token: response.data.accessToken};
+  } catch (error) {
+    console.log(error.response);
+    throw error;
+  }
 };
+
+// const login = async (username, password) => {
+//   // mock
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         //пример проверки учетных данных
+//         if (username === 'admin' && password === 'admin123') {
+//           const mockUser = { id: 1, username: 'admin', email: 'admin@example.com' };
+//           const mockToken = 'mock-jwt-token-' + Math.random().toString(36).substring(2);
+
+//           localStorage.setItem('token', mockToken);
+//           localStorage.setItem('user', JSON.stringify(mockUser));
+
+//           resolve({ user: mockUser, token: mockToken });
+//         } else {
+//           reject({ response: { data: { message: 'Неверное имя пользователя или пароль' } } });
+//         }
+//       }, 500); 
+//     });
+// };
 
 
 const logout = () => {
+  //console.log("logout");
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  return localStorage.getItem('user');
 };
 
 const isAuthenticated = () => {
+  //console.log("isauth ", localStorage.getItem('token'));
   return !!localStorage.getItem('token');
 };
 
 
-const register = async (username, email, password) => {
+const register = async (login, email, password) => {
   try {
-    const response = await axios.post('/register', {
-      email,
-      username,
-      password
+    const response = await axios.post('/auth/register', {
+      email: email,
+      login: login,
+      password: password
     });
     return response.data;
   } catch (error) {
+    console.log(error.response);
     throw error;
   }
 };
@@ -68,7 +80,7 @@ const register = async (username, email, password) => {
 //       setTimeout(() => {
 //         // Имитация успешной регистрации
 //         resolve({ success: true, message: 'Пользователь успешно зарегистрирован' });
-        
+
 //         // if (username === 'existingUser') {
 //         //   reject({ response: { data: { message: 'Пользователь с таким именем уже существует' } } });
 //         // }
@@ -76,11 +88,11 @@ const register = async (username, email, password) => {
 //     });
 //   };
 
-  
+
 const authService = {
   login,
   logout,
-  register, 
+  register,
   getCurrentUser,
   isAuthenticated
 };

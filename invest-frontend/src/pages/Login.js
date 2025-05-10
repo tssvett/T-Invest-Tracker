@@ -32,18 +32,28 @@ const Login = () => {
     try {
       setLoading(true);
       setError('');
+      console.log("do navbar");
+
       await authService.login(username, password);
+      console.log("navbar data", localStorage.getItem('token'));
+      await new Promise(resolve => setTimeout(resolve, 50)); // Задержка
+
       navigate('/shares');
+      console.log("shares");
     } catch (error) {
+      console.log("error", error);
+
       setError(
         error.response?.data?.message || 
         'Не удалось войти. Проверьте имя пользователя и пароль.'
       );
     } finally {
+      console.log("finally");
       setLoading(false);
     }
   };
-  
+  console.log("pre return");
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">

@@ -17,6 +17,7 @@ const Portfolio = () => {
       try {
         setLoading(true);
         const data = await shareService.getUserPortfolio();
+        console.log("portfolio data: ", data);
         setPortfolio(data);
         setError('');
       } catch (error) {
@@ -41,9 +42,9 @@ const Portfolio = () => {
   const prepareChartData = () => {
     if (!portfolio || !portfolio.shares) return [];
     
-    return portfolio.shares.map(share => ({
+    return portfolio.map(share => ({
       name: share.ticker,
-      value: share.currentPrice * share.quantity
+      value: share.nominal * 1//share.quantity
     }));
   };
   
@@ -68,7 +69,7 @@ const Portfolio = () => {
     );
   }
   
-  if (!portfolio || !portfolio.shares || portfolio.shares.length === 0) {
+  if (!portfolio) {
     return (
       <div className="container mt-5">
         <div className="alert alert-info" role="alert">
@@ -87,7 +88,7 @@ const Portfolio = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Общая стоимость</h5>
-              <h2 className="card-text">${portfolio.totalValue.toFixed(2)}</h2>
+              <h2 className="card-text">${portfolio.nominal}</h2>
             </div>
           </div>
         </div>
@@ -96,7 +97,7 @@ const Portfolio = () => {
             <div className="card-body">
               <h5 className="card-title">Прибыль/Убыток</h5>
               <h2 className={`card-text ${portfolio.profit >= 0 ? 'text-success' : 'text-danger'}`}>
-                ${portfolio.profit.toFixed(2)} ({portfolio.profitPercentage.toFixed(2)}%)
+                ${portfolio.nominal} ({portfolio.nominal}%)
               </h2>
             </div>
           </div>
@@ -105,7 +106,7 @@ const Portfolio = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Количество акций</h5>
-              <h2 className="card-text">{portfolio.shares.length}</h2>
+              <h2 className="card-text">{portfolio.length}</h2>
             </div>
           </div>
         </div>
@@ -131,13 +132,11 @@ const Portfolio = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {portfolio.shares.map(share => (
+                    {portfolio.map(share => (
                       <tr key={share.id}>
                         <td>{share.ticker}</td>
                         <td>{share.name}</td>
-                        <td>{share.quantity}</td>
-                        <td>${share.currentPrice}</td>
-                        <td>${(share.currentPrice * share.quantity).toFixed(2)}</td>
+                        <td>${share.nominal}</td>
                         <td>
                           <button 
                             className="btn btn-sm btn-primary"

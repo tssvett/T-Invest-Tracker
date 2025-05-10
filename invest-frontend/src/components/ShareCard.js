@@ -5,6 +5,7 @@ import shareService from '../api/shareService';
 const ShareCard = ({ share, onShowDetails }) => {
   const handleAddToPortfolio = async () => {
     try {
+      console.log("share", share);
       await shareService.addShareToPortfolio(share.id);
       alert('Акция успешно добавлена в портфель');
     } catch (error) {
