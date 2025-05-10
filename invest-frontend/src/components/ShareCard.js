@@ -3,6 +3,8 @@ import React from 'react';
 import shareService from '../api/shareService';
 
 const ShareCard = ({ share, onShowDetails }) => {
+  //share.nominal = Math.floor(Math.random() * 100);
+
   const handleAddToPortfolio = async () => {
     try {
       console.log("share", share);
@@ -18,7 +20,7 @@ const ShareCard = ({ share, onShowDetails }) => {
     <div className="card mb-3">
       <div className="card-body">
         <h5 className="card-title">{share.name} ({share.ticker})</h5>
-        <p className="card-text">Текущая цена: ${share.curresharece}</p>
+        <p className="card-text">Текущая цена: ${share.nominal}</p>
         <p className="card-text">Изменение: {share.chashare}</p>
         <div className="d-flex justify-content-between mt-3">
           <button 

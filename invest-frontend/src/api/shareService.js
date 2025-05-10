@@ -36,6 +36,7 @@ const getAllShares = async () => {
     //   "dlongClient": 0,
     //   "dshortClient": 0
     // },]
+    //console.log(response.data.slice(0, 3));
     return response.data;
   } catch (error) {
     throw error;

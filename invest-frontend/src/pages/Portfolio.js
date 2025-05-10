@@ -40,7 +40,7 @@ const Portfolio = () => {
   };
   
   const prepareChartData = () => {
-    if (!portfolio || !portfolio.shares) return [];
+    if (!portfolio || !portfolio.length) return [];
     
     return portfolio.map(share => ({
       name: share.ticker,
@@ -48,6 +48,12 @@ const Portfolio = () => {
     }));
   };
   
+  portfolio.forEach(share => {
+    share.nominal = Math.floor(Math.random() * 100);
+  });
+  portfolio.nominal = portfolio.reduce((sum, share) => sum + share.nominal, 0);
+
+
   if (loading) {
     return (
       <div className="container mt-5 text-center">
@@ -78,7 +84,7 @@ const Portfolio = () => {
       </div>
     );
   }
-  
+  console.log("portfolio: ", portfolio);
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Мой инвестиционный портфель</h2>
@@ -96,8 +102,8 @@ const Portfolio = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Прибыль/Убыток</h5>
-              <h2 className={`card-text ${portfolio.profit >= 0 ? 'text-success' : 'text-danger'}`}>
-                ${portfolio.nominal} ({portfolio.nominal}%)
+              <h2 className={`card-text ${(portfolio.nominal - 0) >= 0 ? 'text-success' : 'text-danger'}`}>
+                ${portfolio.nominal} ({0}%)
               </h2>
             </div>
           </div>
@@ -136,7 +142,10 @@ const Portfolio = () => {
                       <tr key={share.id}>
                         <td>{share.ticker}</td>
                         <td>{share.name}</td>
+                        <td>{1}</td>
                         <td>${share.nominal}</td>
+                        <td>${share.nominal*1}</td>
+
                         <td>
                           <button 
                             className="btn btn-sm btn-primary"
