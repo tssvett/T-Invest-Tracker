@@ -3,7 +3,7 @@ import React from 'react';
 import shareService from '../api/shareService';
 
 const ShareCard = ({ share, onShowDetails }) => {
-  //share.nominal = Math.floor(Math.random() * 100);
+  share.nominal = Math.floor(Math.random() * 100);
 
   const handleAddToPortfolio = async () => {
     try {

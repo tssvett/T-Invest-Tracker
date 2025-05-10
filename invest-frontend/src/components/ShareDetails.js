@@ -3,7 +3,8 @@ import React from 'react';
 
 const ShareDetails = ({ share, onClose }) => {
   if (!share) return null;
-  
+  share.nominal = Math.floor(Math.random() * 100);
+
   return (
     <div className="card">
       <div className="card-header d-flex justify-content-between align-items-center">
@@ -14,7 +15,7 @@ const ShareDetails = ({ share, onClose }) => {
         <h4>{share.name} ({share.ticker})</h4>
         <div className="row mt-4">
           <div className="col-md-6">
-            <p><strong>Текущая цена:</strong> ${share.curresharece}</p>
+            <p><strong>Текущая цена:</strong> ${share.nominal}</p>
             <p><strong>Изменение за день:</strong> {share.dailyChanshare}%</p>
             <p><strong>Объем торгов:</strong> {share.volumshare}</p>
             <p><strong>Рыночная капитализация:</strong> ${share.marketCap}</p>
