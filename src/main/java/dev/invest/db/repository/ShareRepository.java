@@ -5,8 +5,11 @@ import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.ShareRecord;
 import dev.invest.utils.BrandUtils;
 import dev.invest.utils.DateUtils;
 import dev.invest.utils.MoneyUtils;
+import static java.lang.Math.abs;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ShareRepository {
     private final DSLContext dslContext;
+    private final Random random = new Random();
 
     public int save(ru.tinkoff.piapi.contract.v1.Share share) {
         return dslContext.insertInto(Share.SHARE,
@@ -63,7 +67,10 @@ public class ShareRepository {
                         Share.SHARE.FIRST_1DAY_CANDLE_DATE,
                         Share.SHARE.BRAND,
                         Share.SHARE.DLONG_CLIENT,
-                        Share.SHARE.DSHORT_CLIENT
+                        Share.SHARE.DSHORT_CLIENT,
+                        Share.SHARE.DAILY_CHANGE,
+                        Share.SHARE.VOLUME_SHARE,
+                        Share.SHARE.MARKET_CAPITALIZATION
                 )
                 .values(share.getFigi(),
                         share.getTicker(),
@@ -86,7 +93,7 @@ public class ShareRepository {
                         share.getCountryOfRiskName(),
                         share.getSector(),
                         share.getIssueSizePlan(),
-                        MoneyUtils.toBigDecimal(share.getNominal()),
+                        BigDecimal.valueOf(abs(random.nextDouble()* 1000)),
                         share.getTradingStatus(),
                         share.getOtcFlag(),
                         share.getBuyAvailableFlag(),
@@ -109,7 +116,10 @@ public class ShareRepository {
                         DateUtils.toSqlTimestamp(share.getFirst1DayCandleDate()),
                         BrandUtils.toString(share.getBrand()),
                         MoneyUtils.toBigDecimal(share.getDlongClient()),
-                        MoneyUtils.toBigDecimal(share.getDshortClient())
+                        MoneyUtils.toBigDecimal(share.getDshortClient()),
+                        BigDecimal.valueOf(abs(random.nextDouble() * 10)),
+                        BigDecimal.valueOf(abs(random.nextDouble()* 1000)),
+                        BigDecimal.valueOf(abs(random.nextDouble() * 10000))
                 )
                 .onDuplicateKeyIgnore()
                 .execute();
