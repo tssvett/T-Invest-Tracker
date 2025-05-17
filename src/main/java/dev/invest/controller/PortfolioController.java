@@ -66,7 +66,7 @@ public class PortfolioController {
             summary = "Добавить акцию пользователю",
             tags = {PORTFOLIO_CONTROLLER}
     )
-    @PreAuthorize("#userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#request.userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
     public PortfolioDto addShareToUser(@RequestBody @Valid PortfolioDto request) {
         return portfolioService.create(request);
     }

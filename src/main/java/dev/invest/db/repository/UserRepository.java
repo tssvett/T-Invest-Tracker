@@ -46,11 +46,13 @@ public class UserRepository {
                         Users.USERS.USER_ID,
                         Users.USERS.LOGIN,
                         Users.USERS.PASSWORD,
-                        Users.USERS.EMAIL)
+                        Users.USERS.EMAIL,
+                        Users.USERS.ROLE)
                 .values(userId,
                         usersRecord.getLogin(),
                         usersRecord.getPassword(),
-                        usersRecord.getEmail())
+                        usersRecord.getEmail(),
+                        usersRecord.getRole())
                 .onDuplicateKeyIgnore()
                 .returning().fetchOne();
     }

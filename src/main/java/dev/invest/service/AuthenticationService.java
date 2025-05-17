@@ -47,6 +47,7 @@ public class AuthenticationService {
         List<SimpleGrantedAuthority> roles = userService.getRoles(authRequest.login()).stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList();
+        System.out.println(roles.get(0).getAuthority().toString());
         UUID userId = userService.getUserId(authRequest.login());
         String accessToken = jwtService.generateAccessToken(authRequest.login(), roles, userId);
         String refreshToken = jwtService.generateRefreshToken(authRequest.login());
