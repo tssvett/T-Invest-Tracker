@@ -172,9 +172,9 @@ public class RestExceptionHandler {
                 new ExceptionDetails(
                         ex.getClass().getName(),
                         ex.getMessage(),
-                        HttpStatus.BAD_REQUEST
+                        HttpStatus.UNAUTHORIZED
                 ),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.UNAUTHORIZED
         );
     }
 

@@ -23,6 +23,9 @@ public record ShareDto(
         @NotBlank String shareType,
         BigDecimal dlongClient,
         BigDecimal dshortClient,
-        BigInteger nominal
+        BigInteger nominal,
+        BigDecimal dailyChange,
+        BigDecimal volumeShare,
+        BigDecimal marketCapitalization
 ) {
 }
