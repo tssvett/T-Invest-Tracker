@@ -38,6 +38,22 @@ services:
     networks:
       - app-tier
 
+  frontend:
+    build:
+      context: ../invest-frontend
+    container_name: invest-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../invest-frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+    networks:
+      - app-tier
+
 networks:
   app-tier:
     name: app-tier
