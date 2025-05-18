@@ -1,9 +1,10 @@
 package dev.invest.controller;
 
-import dev.invest.model.portfolio.PortfolioDto;
+import dev.invest.model.portfolio.OwnedShareCreateDto;
+import dev.invest.model.portfolio.OwnedShareDto;
 import dev.invest.model.share.ShareDto;
 import dev.invest.model.user.UserDto;
-import dev.invest.service.PortfolioService;
+import dev.invest.service.OwnedShareService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,18 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(
-        name = PortfolioController.PORTFOLIO_CONTROLLER,
+        name = OwnedShareController.PORTFOLIO_CONTROLLER,
         description = "API Инвестиционного портфеля пользователя"
 )
 @SecurityRequirement(name = "JWT")
-@RequestMapping(PortfolioController.API_PORTFOLIO)
-public class PortfolioController {
+@RequestMapping(OwnedShareController.API_PORTFOLIO)
+public class OwnedShareController {
     static final String PORTFOLIO_CONTROLLER = "portfolio-controller";
     static final String API_VERSION = "v1";
     static final String API_PREFIX = "/api/" + API_VERSION;
     static final String API_PORTFOLIO = API_PREFIX + "/portfolio";
 
-    private final PortfolioService portfolioService;
+    private final OwnedShareService ownedShareService;
 
     @GetMapping("share/{userId}")
     @Operation(
@@ -47,8 +48,8 @@ public class PortfolioController {
             tags = {PORTFOLIO_CONTROLLER}
     )
     @PreAuthorize("#userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public List<ShareDto> findSharedByUser(@PathVariable UUID userId) {
-        return portfolioService.findSharesByUserId(userId);
+    public List<OwnedShareDto> findSharedByUser(@PathVariable UUID userId) {
+        return ownedShareService.findSharesByUserId(userId);
     }
 
     @GetMapping("user/{shareUid}")
@@ -58,7 +59,7 @@ public class PortfolioController {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDto> findUsersByShare(@PathVariable UUID shareUid) {
-        return portfolioService.findUsersByShareId(shareUid);
+        return ownedShareService.findUsersByShareId(shareUid);
     }
 
     @PostMapping
@@ -67,8 +68,8 @@ public class PortfolioController {
             tags = {PORTFOLIO_CONTROLLER}
     )
     @PreAuthorize("#request.userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public PortfolioDto addShareToUser(@RequestBody @Valid PortfolioDto request) {
-        return portfolioService.create(request);
+    public OwnedShareDto addShareToUser(@RequestBody @Valid OwnedShareCreateDto request) {
+        return ownedShareService.create(request);
     }
 
     @PutMapping
@@ -77,8 +78,8 @@ public class PortfolioController {
             tags = {PORTFOLIO_CONTROLLER}
     )
     @PreAuthorize("#request.userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public PortfolioDto updateShareToUser(@RequestBody @Valid PortfolioDto request) {
-        return portfolioService.update(request);
+    public OwnedShareDto updateShareToUser(@RequestBody @Valid OwnedShareDto request) {
+        return ownedShareService.update(request);
     }
 
     @DeleteMapping
@@ -87,7 +88,7 @@ public class PortfolioController {
             tags = {PORTFOLIO_CONTROLLER}
     )
     @PreAuthorize("#request.userId == authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public void deleteShareToUser(@RequestBody @Valid PortfolioDto request) {
-        portfolioService.delete(request);
+    public void deleteShareToUser(@RequestBody @Valid OwnedShareDto request) {
+        ownedShareService.delete(request);
     }
 }

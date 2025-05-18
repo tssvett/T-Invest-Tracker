@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PortfolioRepository {
+public class OwnedShareRepository {
     private final DSLContext dslContext;
 
     public UsersShareRecord save(UsersShareRecord usersShare) {
         return dslContext.insertInto(UsersShare.USERS_SHARE)
                 .set(UsersShare.USERS_SHARE.USER_ID, usersShare.getUserId())
                 .set(UsersShare.USERS_SHARE.SHARE_UID, usersShare.getShareUid())
+                .set(UsersShare.USERS_SHARE.SHARE_COUNT, usersShare.getShareCount())
+                .set(UsersShare.USERS_SHARE.SHARE_PRICE, usersShare.getSharePrice())
                 .returning()
                 .fetchOne();
     }
@@ -37,6 +39,8 @@ public class PortfolioRepository {
         return dslContext.update(UsersShare.USERS_SHARE)
                 .set(UsersShare.USERS_SHARE.USER_ID, usersShare.getUserId())
                 .set(UsersShare.USERS_SHARE.SHARE_UID, usersShare.getShareUid())
+                .set(UsersShare.USERS_SHARE.SHARE_COUNT, usersShare.getShareCount())
+                .set(UsersShare.USERS_SHARE.SHARE_PRICE, usersShare.getSharePrice())
                 .where(UsersShare.USERS_SHARE.USER_ID.eq(usersShare.getUserId()))
                 .and(UsersShare.USERS_SHARE.SHARE_UID.eq(usersShare.getShareUid()))
                 .returning()
