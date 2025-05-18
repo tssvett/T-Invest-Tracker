@@ -2,6 +2,7 @@ package dev.invest.utils;
 
 import dev.invest.db.jooq.org.jooq.generated.invest.tables.records.UsersShareRecord;
 import dev.invest.model.user.CreateUserRequest;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -132,7 +133,7 @@ public class GenerateUtils {
     }
 
     public static UsersShareRecord buildUserShare(UUID userId, UUID shareUid) {
-        return new UsersShareRecord(userId, shareUid);
+        return new UsersShareRecord(userId, shareUid, BigInteger.ONE, BigInteger.valueOf(1000), random.nextInt(1, 2000000));
     }
 
     public static List<UsersShareRecord> buildUserShareList(List<UUID> userIds, List<UUID> shareIds) {

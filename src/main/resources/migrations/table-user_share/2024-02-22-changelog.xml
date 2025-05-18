@@ -9,4 +9,6 @@
     </changeSet>
 
     <include file="2024-02-22-create-table.sql" relativeToChangelogFile="true"/>
+    <include file="2025-05-18-update-table.sql" relativeToChangelogFile="true"/>
+    <include file="2025-05-18-update-pk.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
