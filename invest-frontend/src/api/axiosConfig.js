@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Добавляем перехватчик для добавления токена к запросам
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -24,7 +23,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Добавляем перехватчик для обработки ошибок
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;

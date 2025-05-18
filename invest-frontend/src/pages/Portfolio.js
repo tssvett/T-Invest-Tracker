@@ -48,10 +48,13 @@ const Portfolio = () => {
     }));
   };
   
-  portfolio.forEach(share => {
-    share.nominal = Math.floor(Math.random() * 100);
-  });
-  portfolio.nominal = portfolio.reduce((sum, share) => sum + share.nominal, 0);
+  if (portfolio) {
+      portfolio.forEach(share => {
+      share.nominal = Math.floor(Math.random() * 100);
+    });
+    portfolio.nominal = portfolio.reduce((sum, share) => sum + share.nominal, 0);
+
+  }
 
 
   if (loading) {

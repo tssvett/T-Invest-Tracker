@@ -70,7 +70,7 @@ const getUserPortfolio = async () => {
   try {
     const userId = localStorage.getItem('user');
     const response = await axios.get(`/portfolio/share/${userId}`);
-    console.log("get user share");
+    //console.log("get user share");
     return response.data;
   } catch (error) {
     console.log(error.response);
