@@ -1,58 +1,63 @@
 ﻿// src/pages/Login.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { AuthContext } from '../App';
 import authService from '../api/authService';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
+    
     const navigate = useNavigate();
     const location = useLocation();
-    
-    // Проверка сообщения о успешной регистрации
+    const { login } = useContext(AuthContext);
+
+    // Обработка сообщений из state navigation
     useEffect(() => {
-      if (location.state?.message) {
-        setSuccess(location.state.message);
-        // Очистка состояния после отображения сообщения
-        navigate(location.pathname, { replace: true, state: {} });
-      }
+        const registrationMessage = location.state?.registrationSuccess;
+        const sessionExpiredMessage = location.state?.sessionExpired;
+        
+        if (registrationMessage) {
+            setError('Регистрация прошла успешно! Войдите используя свои данные');
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+        
+        if (sessionExpiredMessage) {
+            setError('Сессия истекла. Пожалуйста, войдите снова');
+            navigate(location.pathname, { replace: true, state: {} });
+        }
     }, [location, navigate]);
-    
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    
-    if (!username || !password) {
-      setError('Пожалуйста, введите имя пользователя и пароль');
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      setError('');
-      console.log("do navbar");
 
-      await authService.login(username, password);
-      //console.log("navbar data", localStorage.getItem('token'));
-      await new Promise(resolve => setTimeout(resolve, 50)); // Задержка
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        
+        if (!username.trim() || !password.trim()) {
+            setError('Заполните все обязательные поля');
+            return;
+        }
 
-      navigate('/shares');
-      console.log("shares");
-    } catch (error) {
-      console.log("error", error);
-
-      setError(
-        error.response?.data?.message || 
-        'Не удалось войти. Проверьте имя пользователя и пароль.'
-      );
-    } finally {
-      console.log("finally");
-      setLoading(false);
-    }
-  };
-  console.log("pre return");
+        try {
+            setLoading(true);
+            setError('');
+            
+            const { token, user } = await authService.login(username, password);
+            
+            login(token, user);
+            
+            navigate('/shares', { replace: true });
+            
+        } catch (err) {
+            console.error('Ошибка авторизации:', err);
+            setError(
+                err.response?.data?.message ||
+                'Ошибка входа. Проверьте подключение к интернету'
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
   return (
     <div className="container mt-5">
@@ -102,7 +107,6 @@ const Login = () => {
                     {loading ? 'Вход...' : 'Войти'}
                   </button>
                 </div>
-                {/* Добавьте ссылку на регистрацию */}
                 <div className="text-center mt-3">
                     <p>Нет аккаунта? <Link to="/register">Зарегистрироваться</Link></p>
                 </div>

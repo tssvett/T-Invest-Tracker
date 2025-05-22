@@ -11,7 +11,7 @@ const Portfolio = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedShare, setSelectedShare] = useState(null);
-  
+
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
@@ -27,32 +27,53 @@ const Portfolio = () => {
         setLoading(false);
       }
     };
-    
+
     fetchPortfolio();
   }, []);
-  
+
   const handleShowDetails = (share) => {
-    setSelectedShare(share);
+    try {
+      const response = shareService.getShareById(share.shareId);
+      response.then((share_full) => {
+        setSelectedShare(share_full);      
+      });
+    } catch (error) {
+      console.error(error);
+    } 
   };
-  
+
   const handleCloseDetails = () => {
     setSelectedShare(null);
   };
-  
+
   const prepareChartData = () => {
     if (!portfolio || !portfolio.length) return [];
-    
+
     return portfolio.map(share => ({
-      name: share.ticker,
-      value: share.nominal * 1//share.quantity
+      name: shareService.getShareById(share.shareId).ticker,
+      value: share.sharePrice * share.count
     }));
   };
-  
+
+  const handleDeleteShare = async (user_share) => {
+    if (!window.confirm('Вы уверены, что хотите удалить акцию из портфеля?')) return;
+
+    try {
+      await shareService.deleteShare(user_share);
+      setPortfolio(prev => prev.filter(share => share.shareId !== user_share.shareId));
+      //window.location.reload(); 
+    } catch (error) {
+      console.error('Ошибка удаления:', error);
+      setError('Не удалось удалить акцию');
+    }
+  };
+
+
   if (portfolio) {
-      portfolio.forEach(share => {
-      share.nominal = Math.floor(Math.random() * 100);
-    });
-    portfolio.nominal = portfolio.reduce((sum, share) => sum + share.nominal, 0);
+    // portfolio.forEach(share => {
+    //   //share.nominal = Math.floor(Math.random() * 100);
+    // });
+    portfolio.nominal = portfolio.reduce((sum, share) => sum + share.sharePrice * (share.shareCount ? share.shareCount : 1), 0);
 
   }
 
@@ -67,7 +88,7 @@ const Portfolio = () => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="container mt-5">
@@ -77,8 +98,8 @@ const Portfolio = () => {
       </div>
     );
   }
-  
-  if (!portfolio) {
+
+  if (portfolio.length == 0) {
     return (
       <div className="container mt-5">
         <div className="alert alert-info" role="alert">
@@ -87,11 +108,11 @@ const Portfolio = () => {
       </div>
     );
   }
-  console.log("portfolio: ", portfolio);
+  //console.log("portfolio: ", portfolio);
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Мой инвестиционный портфель</h2>
-      
+
       <div className="row mb-4">
         <div className="col-md-4">
           <div className="card">
@@ -120,7 +141,7 @@ const Portfolio = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="row">
         <div className="col-md-7">
           <div className="card">
@@ -143,18 +164,24 @@ const Portfolio = () => {
                   <tbody>
                     {portfolio.map(share => (
                       <tr key={share.id}>
-                        <td>{share.ticker}</td>
-                        <td>{share.name}</td>
-                        <td>{1}</td>
-                        <td>${share.nominal}</td>
-                        <td>${share.nominal*1}</td>
+                        <td>{shareService.getShareById(share.shareId).ticker}</td>
+                        <td>{shareService.getShareById(share.shareId).name}</td>
+                        <td>{share.shareCount}</td>
+                        <td>${share.sharePrice}</td>
+                        <td>${share.sharePrice * (share.shareCount ? share.shareCount : 1)}</td>
 
                         <td>
-                          <button 
+                          <button
                             className="btn btn-sm btn-primary"
                             onClick={() => handleShowDetails(share)}
                           >
                             Детали
+                          </button>
+                          <button 
+                            className="btn btn-sm btn-danger"
+                            onClick={() => handleDeleteShare(share)}
+                          >
+                            Удалить акцию
                           </button>
                         </td>
                       </tr>
@@ -165,12 +192,12 @@ const Portfolio = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="col-md-5">
           {selectedShare ? (
-            <ShareDetails 
-              share={selectedShare} 
-              onClose={handleCloseDetails} 
+            <ShareDetails
+              share={selectedShare}
+              onClose={handleCloseDetails}
             />
           ) : (
             <div className="card">
@@ -187,7 +214,7 @@ const Portfolio = () => {
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                     >
                       {prepareChartData().map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

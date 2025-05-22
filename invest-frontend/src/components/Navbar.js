@@ -1,16 +1,17 @@
 ﻿// src/components/Navbar.js
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import authService from '../api/authService';
+import { AuthContext } from '../App';
 
 const Navbar = () => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const currentUser = authService.getCurrentUser();
-  
+
   const handleLogout = () => {
-    authService.logout();
+    logout();
     navigate('/login');
   };
+
   
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -21,7 +22,7 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
-            {currentUser && (
+            {isAuthenticated && (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/shares">Акции</Link>
@@ -36,7 +37,7 @@ const Navbar = () => {
             )}
           </ul>
           <ul className="navbar-nav">
-            {currentUser ? (
+            {isAuthenticated ? (
               <>
                 <li className="nav-item">
                   <span className="nav-link">Привет, {}</span>

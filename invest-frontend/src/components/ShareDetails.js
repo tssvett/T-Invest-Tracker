@@ -3,11 +3,11 @@ import React from 'react';
 
 const ShareDetails = ({ share, onClose }) => {
   if (!share) return null;
-  share.nominal = Math.floor(Math.random() * 100);
-  share.nominal = Math.floor(Math.random() * 100);
-  share.dailyChanshare = Math.floor(Math.random() * 10);
-  share.volumshare = Math.floor(Math.random() * 10);
-  share.marketCap = Math.floor(Math.random() * 10000);
+  //share.nominal = Math.floor(Math.random() * 100);
+  //share.nominal = Math.floor(Math.random() * 100);
+  // share.chashare = Math.floor(Math.random() * 10);
+  //share.volumshare = Math.floor(Math.random() * 10);
+  //share.marketCap = Math.floor(Math.random() * 10000);
   return (
     <div className="card">
       <div className="card-header d-flex justify-content-between align-items-center">
@@ -19,9 +19,9 @@ const ShareDetails = ({ share, onClose }) => {
         <div className="row mt-4">
           <div className="col-md-6">
             <p><strong>Текущая цена:</strong> ${share.nominal}</p>
-            <p><strong>Изменение за день:</strong> {share.dailyChanshare}%</p>
-            <p><strong>Объем торгов:</strong> {share.volumshare}</p>
-            <p><strong>Рыночная капитализация:</strong> ${share.marketCap}M</p>
+            <p><strong>Изменение за день:</strong> {share.chashare}%</p>
+            {/*<p><strong>Объем торгов:</strong> {share.volumshare}</p>*/}
+            <p><strong>Рыночная капитализация:</strong> ${share.marketCapitalization}M</p>
           </div>
           <div className="col-md-6">
             <p><strong>Валюта:</strong> ${share.currency}</p>
@@ -33,10 +33,6 @@ const ShareDetails = ({ share, onClose }) => {
             <p><strong>P/E коэффициент:</strong> {share.peRatsharep}</p>
             <p><strong>Дивидендная доходность:</strong> {share.dividendYield}%</p>*/}
           </div>
-        </div>
-        <div className="mt-3">
-          <h5>О компании</h5>
-          <p>{share.description}</p>
         </div>
       </div>
     </div>

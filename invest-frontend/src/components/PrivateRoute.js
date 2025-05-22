@@ -1,11 +1,16 @@
-﻿// src/components/PrivateRoute.js
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import authService from '../api/authService';
+﻿import React, { useContext } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { AuthContext } from '../App';
 
 const PrivateRoute = ({ children }) => {
-  //console.log("is auth? ", authService.isAuthenticated() );
-  return authService.isAuthenticated() ? children : <Navigate to="/login" />;
+  const { isAuthenticated } = useContext(AuthContext);
+  const location = useLocation();
+
+  return isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 };
 
 export default PrivateRoute;
