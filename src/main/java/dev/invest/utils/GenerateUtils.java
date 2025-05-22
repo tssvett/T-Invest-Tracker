@@ -133,7 +133,12 @@ public class GenerateUtils {
     }
 
     public static UsersShareRecord buildUserShare(UUID userId, UUID shareUid) {
-        return new UsersShareRecord(userId, shareUid, BigInteger.ONE, BigInteger.valueOf(1000), random.nextInt(1, 2000000));
+        return new UsersShareRecord(userId,
+                shareUid,
+                BigInteger.valueOf(random.nextLong(1, 1000)),
+                BigInteger.valueOf(random.nextLong(1, 10000)),
+                random.nextInt(1, 2000000)
+        );
     }
 
     public static List<UsersShareRecord> buildUserShareList(List<UUID> userIds, List<UUID> shareIds) {
