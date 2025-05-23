@@ -12,6 +12,7 @@ const login = async (username, password) => {
       localStorage.setItem('token', response.data.accessToken);
       localStorage.setItem('user', decoded.userId);
     }
+    console.log("successful auth, response: ", response.data);
     return { user: decoded.userId, token: response.data.accessToken };
   } catch (error) {
     console.log(error.response);
