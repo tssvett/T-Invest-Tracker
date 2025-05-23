@@ -17,10 +17,14 @@ public class UsersShareRepository {
         return dslContext
                 .insertInto(USERS_SHARE,
                         USERS_SHARE.USER_ID,
-                        USERS_SHARE.SHARE_UID)
+                        USERS_SHARE.SHARE_UID,
+                        USERS_SHARE.SHARE_COUNT,
+                        USERS_SHARE.SHARE_PRICE)
                 .values(
                         usersShareRecord.getUserId(),
-                        usersShareRecord.getShareUid())
+                        usersShareRecord.getShareUid(),
+                        usersShareRecord.getShareCount(),
+                        usersShareRecord.getSharePrice())
                 .onDuplicateKeyIgnore()
                 .execute();
     }
