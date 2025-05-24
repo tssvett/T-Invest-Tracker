@@ -37,9 +37,9 @@ build/
 .gradle/
 gradle.properties
 
-.gitattributes
-
+/docker/.env
 /out
+.gitattributes
 
 ### JOOQ generated sources ###
 /src/main/java/dev/invest/persistence/jooq
