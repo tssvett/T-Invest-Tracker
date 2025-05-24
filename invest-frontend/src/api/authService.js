@@ -3,10 +3,13 @@ import { jwtDecode } from 'jwt-decode';
 
 const login = async (username, password) => {
   try {
+    console.log("logging...");
     const response = await axios.post('/auth/login', {
       login: username,
       password: password
     });
+    console.log("logging response: ", response);
+
     const decoded = jwtDecode(response.data.accessToken);
     if (response.data.accessToken) {
       localStorage.setItem('token', response.data.accessToken);

@@ -48,7 +48,10 @@ services:
       - ../invest-frontend:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:8080/api/v1
+    depends_on:
+      - db
+      - t-invest
     stdin_open: true
     tty: true
     networks:
